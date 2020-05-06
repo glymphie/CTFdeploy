@@ -116,7 +116,6 @@ department as CTF deployment might waste time on a repetitive task.
 
 
 ## Evaluation
-This will be filled out upon end date of the project.
 
 
 ## References
