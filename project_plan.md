@@ -58,11 +58,13 @@ Schedule around goals and extra goals can be found under
 
 ## Organization
 Project members:
+
 |**Name**|**Website**|**Email**|
 |---|---|---|
-|Peter Husted Simonsen| https://glymph.xyz | pete58f8@edu.ucl.dk|
+| Peter Husted Simonsen | https://glymph.xyz | pete58f8@edu.ucl.dk |
 
 Mentors:
+
 |**Name**|**Email**|
 |---|---|
 |Nikolaj Peter Esbjørn Simonsen| nisi@ucl.dk|
