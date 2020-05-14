@@ -66,8 +66,7 @@ lists with their config as lists with list members.
 
 ##### Must-have
 `password`: Password used to log into the account.  
-`email`: This is not necessarily a must but might come in handy if you want to
-receive messages about the CTF.  
+`email`: The email which should be used by CTFd to send information to the user.
 `type`: Can either be `admin` or `user`.  
 
 ##### Optional
@@ -115,10 +114,27 @@ present.
 
 ---
 
-## Example:
+
+# How does it work?
+This is how it works.
+
+# References
+### [CTFd](https://github.com/CTFd/CTFd)
+The project is based upon the CTFd CTF-framework and is a modification-script of 
+this software. The project is not using a modified version of CTFd but is a
+separate project.
+
+##### [Project Plan](project_plan.md)
+The project plan is for school purposes.
+
+`One-Click Deployment = OCD`
+
+## Example of setup.yml:
 ```
 CTFd:
+
   config:
+
     name:
       - "Test CTF name"
     description:
@@ -137,16 +153,19 @@ CTFd:
       - "#0021ff"
 
   pages:
+
     index:
       page:
         - "index.html"
       file:
         - "frontpage.png"
+
     test: 
       page:
         - "test.html"
 
   users:
+
     admin1:
       password:
         - 'admintest'
@@ -154,6 +173,7 @@ CTFd:
         - 'admin@test.com'
       type:
         - 'admin'
+
     admin2:
       password:
         - 'test'
@@ -163,7 +183,9 @@ CTFd:
         - 'admin'
 
   challenges:
+
     Crypto:
+
       test_challenge_1:
         value:
           - 1337
@@ -193,6 +215,7 @@ CTFd:
             - "Maybe you should"
           cost:
             - 12
+
       chal_2:
         value:
           - 321
@@ -204,7 +227,9 @@ CTFd:
             - 'chal'
         tag:
           - 'easy'
+
     Reverse:
+
       rev_challenge:
         value:
           - 92
@@ -218,17 +243,3 @@ CTFd:
           - 'test_challenge_1'
           - 'chal_2'
 ```
-
-# How does it work?
-This is how it works.
-
-# References
-### [CTFd](https://github.com/CTFd/CTFd)
-The project is based upon the CTFd CTF-framework and is a modification-script of 
-this software. The project is not using a modified version of CTFd but is a
-separate project.
-
-##### [Project Plan](project_plan.md)
-The project plan is for school purposes.
-
-`One-Click Deployment = OCD`
