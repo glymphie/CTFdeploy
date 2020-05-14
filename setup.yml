@@ -1,4 +1,5 @@
 CTFd:
+
   config:
     name:
       - "Test CTF name"
@@ -86,6 +87,7 @@ CTFd:
             - 'chal'
         tag:
           - 'easy'
+          - 'bruh'
 
     Rev:
 
@@ -98,3 +100,5 @@ CTFd:
         flag:
           flag:
             - 'blah'
+        requirements:
+          - 'chal_2'

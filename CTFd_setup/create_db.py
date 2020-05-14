@@ -8,7 +8,6 @@ from CTFd.utils.crypto import hash_password
 
 Base = declarative_base()
 
-# Table content
 class Challenges(Base):
     def __init__(self):
         self.__tablename__ = "challenges"
@@ -23,15 +22,15 @@ class Challenges(Base):
         self.state = Column('state', VARCHAR(80), nullable=False)      
         self.requirements = Column('requirements', JSON)
 
-    def create_challenge(self,name,description,value,type,state='visible',category='standard',max_attempts=0,requirements=None):
+    def create_challenge(self,name,description,value,category,type='standard',state='visible',max_attempts=0,requirements=None):
+        self.category = category
         self.name = name
         self.description = description
-        self.max_attempts = max_attempts
         self.value = value
-        self.category = category
         self.type = type
         self.state = state
         self.requirements = requirements
+        self.max_attempts = max_attempts
 
 
 class Config(Base):
@@ -69,21 +68,14 @@ class Users(Base):
         self.created = Column('created',DATETIME)    
 
     def create_user(self,name,password,email,type,hidden=1,banned=0,verified=0,team_id=None,secret=None,website=None,affiliation=None,country=None,bracket=None,oauth_id=None,created=None):
-        self.oauth_id = oauth_id
         self.name = name
         self.password = hash_password(password)
         self.email = email
         self.type = type
-        self.secret = secret
         self.website = website
         self.affiliation = affiliation
         self.country = country
-        self.bracket = bracket
         self.hidden = hidden
-        self.banned = banned
-        self.verified = verified
-        self.team_id = team_id
-        self.created = created
 
 
 class Pages(Base):
