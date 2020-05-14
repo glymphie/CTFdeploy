@@ -21,8 +21,6 @@ This setup is controlled by a YAML file.
 
 The different sections control how the CTF is setup.
 
-By default, each list can only have one list member unless stated otherwise.
-
 ---
 
 ### config
@@ -216,6 +214,9 @@ CTFd:
         flag:
           flag:
             - 'blah'
+        requirements:
+          - 'test_challenge_1'
+          - 'chal_2'
 ```
 
 # How does it work?
