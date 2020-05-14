@@ -23,6 +23,8 @@ The different sections control how the CTF is setup.
 
 By default, each list can only have one list member unless stated otherwise.
 
+---
+
 ### config
 The `config` section is basic setup and is necessary for the server to function.
 Config is defined as a list with the configuration as lists with list members.
@@ -43,6 +45,8 @@ Config is defined as a list with the configuration as lists with list members.
 `theme_header`: A global header which is displayed on all pages.  
 `theme_footer`: A global footer which is displayed on all pages.  
 
+---
+
 ### pages
 The `pages` section is used define the pages used to introduce users to the CTF.
 Pages are defined as lists named after their path and defined by lists with list
@@ -55,6 +59,8 @@ members.
 ##### Optional
 Optionally more pages can be defined.   
 `file`: If the page uses a picture, please reference it.
+
+---
 
 ### users
 The `users` section defines premade users. Usually admins. Users are defined as
@@ -71,6 +77,8 @@ receive messages about the CTF.
 `website`: Website displayed next to username.  
 `country`: Country displayed next to username.  
 `affiliation`: Affiliation displayed beneath username.  
+
+---
 
 ### challenges
 The `challenges` section defines premade challenges and their categories.
@@ -90,26 +98,24 @@ flags can be defined.
 required to be solved before this challenge is shown.  
 `tag`: Can have multiple list members. Tags to be shown when viewing the
 challenge.  
-`file`: Can have multiple list members. Files which are used in the challenge.
+`file`: Can have multiple list members. Files which are used in the challenge.  
 `hint`: The hint is defined as a list with list member as its config.  
 
-#### Definitions
-These lists are embedded into the challenge list.
-
-#### flag
+##### flag
 The flag is necessary for a challenge to be solvable. It is defined as a list
 with its config as lists with list members.  
 `flag`: This is the string representing the flag. Must be present.   
 `type`: Can be either `static` or `regex`. Default is `static`.  
 `case`: Can be either `sensitive` or `insensitive`. Default is `sensitive`. 
 
-#### hint
+##### hint
 The hint is to help with the challenge. Multiple hints can be included in one
 challenge.   
 `description`: Description of the hint which is shown to the user. Must be
 present.  
 `cost`: Spend points to show the hint. Default is `0`.  
 
+---
 
 ## Example:
 ```
