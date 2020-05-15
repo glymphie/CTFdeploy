@@ -1,11 +1,6 @@
----
-language: yaml
----
-
+```yaml
 CTFd:
-
   config:
-
     name:
       - "Test CTF name"
     description:
@@ -22,21 +17,16 @@ CTFd:
       - "logo.png"
     theme_color:
       - "#0021ff"
-
   pages:
-
     index:
       page:
         - "index.html"
       file:
         - "frontpage.png"
-
     test: 
       page:
         - "test.html"
-
   users:
-
     admin1:
       password:
         - 'admintest'
@@ -44,7 +34,6 @@ CTFd:
         - 'admin@test.com'
       type:
         - 'admin'
-
     admin2:
       password:
         - 'test'
@@ -52,18 +41,14 @@ CTFd:
         - ''
       type:
         - 'admin'
-
   challenges:
-
     Crypto:
-
       test_challenge_1:
         value:
           - 1337
         description:
           - "# Test
             This is a challenge
-
             The port is 2232"
         flag:
           type:
@@ -86,7 +71,6 @@ CTFd:
             - "Maybe you should"
           cost:
             - 12
-
       chal_2:
         value:
           - 321
@@ -98,9 +82,7 @@ CTFd:
             - 'chal'
         tag:
           - 'easy'
-
     Reverse:
-
       rev_challenge:
         value:
           - 92
@@ -113,3 +95,4 @@ CTFd:
         requirements:
           - 'test_challenge_1'
           - 'chal_2'
+```
