@@ -1,5 +1,9 @@
 # YAML
-The overall structure starts with `CTFd:`.
+The overall structure of the database is controlled by a `setup.yml` file. This
+file is used by `start.sh`. More specifically, it's used by `OCD.py` to
+create queries for the database to populate it.
+
+The file starts with `CTFd:` as the root list.
 
 Look at [this example](example_yaml.md).
 
