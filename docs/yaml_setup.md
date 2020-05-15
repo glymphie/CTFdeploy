@@ -96,7 +96,7 @@ dictionary with its config as lists with list members.
 
 ##### hint
 The hint is to help with the challenge. Multiple hints can be included in one
-challenge if named differently eg. hint1, hint_exp, etc.   
+challenge if named differently eg. `hint1`, `hint_exp`, etc.   
 `description`: Description of the hint which is shown to the user. Must be
 present.  
 `cost`: Spend points to show the hint. Default is `0`.  
