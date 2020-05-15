@@ -38,7 +38,7 @@ CTFd:
       password:
         - 'test'
       email:
-        - ''
+        - 'test@gmail.com'
       type:
         - 'admin'
   challenges:
