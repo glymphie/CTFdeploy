@@ -5,9 +5,9 @@ CTFd:
     name: Test CTF name
     description: Test CTF description
     usermode: users
-    start: 01/02/2020 21:22
+    start: 01/02/2019 21:22
     end: 01/02/2021 21:22
-    whitelist: 'email.com, gmail.com'
+    whitelist: ''
     ctf_logo: logo.png
     theme_color: '#0022ff'
 
@@ -36,9 +36,8 @@ CTFd:
 
       test_challenge_1:
         value: 1337
-        description: "# Test   
-            This is a challenge
-
+        description: "# Test\n
+            This is a challenge\n\n
             The port is 2232"
         flag:
           flag: test
@@ -55,8 +54,7 @@ CTFd:
 
       chal_2:
         value: 321
-        description: "# test2  
-
+        description: "# test\n
                       Challenge lol"
         flag:
           flag: chal
@@ -68,8 +66,7 @@ CTFd:
 
       rev_chall:
         value: 92
-        description: "# Desc
-        
+        description: "# Desc\n
                       slkdjf"
         flag:
           flag: blah

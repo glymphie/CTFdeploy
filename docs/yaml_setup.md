@@ -9,6 +9,10 @@ By default, lists can only have one list member unless specified otherwise.
 
 Look at [this example](example_yaml.md) for inspiration.
 
+Descriptions for challenges and hints does support Markdown. However, due to
+python shenanigans, it is advised to used `\n` when dealing with newlines.
+Otherwise, it might not format correctly.
+
 ---
 
 ### config
@@ -54,9 +58,9 @@ The `users` section defines premade users. Usually admins. Users are defined as
 dictionaries with their config as lists with list members.
 
 ##### Must-have
-`password`: Password used to log into the account.  
-`email`: The email which should be used by CTFd to send information to the user.
-`type`: Can either be `admin` or `user`.  
+`password`: Password used to log into the account.    
+`email`: The email which should be used by CTFd to send information to the user.   
+`type`: Can either be `admin` or `user`.    
 
 ##### Optional
 `hidden`: Is the user hidden? `0` or `1`. Default is `1`.  
