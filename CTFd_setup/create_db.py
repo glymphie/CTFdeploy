@@ -23,8 +23,8 @@ class Challenges(Base):
         self.requirements = Column('requirements', JSON)
 
     def create_challenge(self,name,description,value,category,type='standard',state='visible',max_attempts=0,requirements=None):
-        self.category = category
         self.name = name
+        self.category = category
         self.description = description
         self.value = value
         self.type = type
