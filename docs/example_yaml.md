@@ -14,7 +14,8 @@ CTFd:
   pages:
     index:
       page: index.html
-      file: frontpage.png
+      file: 
+        - frontpage.png
     test: 
       page: test.html
     test/more:
@@ -43,7 +44,8 @@ CTFd:
           flag: test
           case: insensitive
           type: regex
-        file: rex.ty
+        file: 
+          - rex.ty
         tag:
           - hard
         hint1:

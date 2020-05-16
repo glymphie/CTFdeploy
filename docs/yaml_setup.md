@@ -49,7 +49,8 @@ with list members.
 
 ##### Optional
 Optionally more pages can be defined.   
-`file`: If the page uses a picture, please reference it.
+`file`: Can have multiple list members. If the page uses a picture, please 
+reference it.
 
 ---
 
