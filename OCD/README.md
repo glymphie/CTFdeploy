@@ -11,7 +11,7 @@ A docker-compose.yml is needed to create these challenges.
 All the pages which are needed for the CTF such as: A custom index page.
 
 ## files
-All the static files which are going to be used in the CTF.
+All the static files which are going to be used in the CTF and for pages.
 
 ## CTFd_setup
 <b>No need to modify anything in this one.</b>

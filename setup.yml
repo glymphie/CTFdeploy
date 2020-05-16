@@ -3,12 +3,20 @@ CTFd:
   config:
     name: Test CTF name
     description: Test CTF description
-    usermode: users
+    user_mode: users
     start: 01/02/2019 21:22
     end: 01/02/2021 21:22
-    whitelist: ''
-    ctf_logo: logo.png
-    theme_color: '#0022ff'
+    whitelist: 
+      - gmail.com
+      - test.com
+    logo: logo.png
+    style: '<style id="theme-color">
+    :root {--theme-color: #ff4422;}
+    h1, h2 {font-family: Georgia,serif;}
+    .navbar-text{color:white;}
+    .navbar{background-color: var(--theme-color) !important; color:white;}
+    .jumbotron{background-color: var(--theme-color) !important;}
+    </style>'
 
   pages:
     index:

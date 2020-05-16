@@ -22,19 +22,18 @@ Config is defined as a dictionary with the configuration as lists with list memb
 ##### Must-have
 `name`: The name of the CTF.  
 `description`: Description of the CTF.  
-`usermode`: Can be either `users` or `teams`.  
+`user_mode`: Can be either `users` or `teams`.  
 `start`: Start time of the CTF. Format: `dd/mm/yyyy hh:mm`.  
 `end`: End time of the CTF. Format: `dd/mm/yyyy hh:mm`.  
   
 ##### Optional
-`whitelist`: Whitelist of email domains, separated by comma.  
-`ctf_logo`: Filename, use a logo instead of the CTF `name`.   
-`theme_color`: Hex value of the header. Must be made a string with quotes 
-due to YAML syntax.
+`whitelist`: Can have multiple list members. Whitelist of email domains.  
+`logo`: Filename, use a logo instead of the CTF `name`.   
 `team_size`: Max team size. Useful when `usermode` is `teams`.  
 `name_changes`: Allow name change? `1` or `0`. Default is `1`.  
-`theme_header`: A global header which is displayed on all pages.  
-`theme_footer`: A global footer which is displayed on all pages.  
+`theme_header`: A global header which is displayed on all pages. HTML. 
+`theme_footer`: A global footer which is displayed on all pages. HTML. 
+`style`: If you've configured a style sheet for another CTFd, paste it here. If you want more readable CSS, add `\n` for newlines.
 
 ---
 
