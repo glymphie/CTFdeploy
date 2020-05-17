@@ -1,4 +1,4 @@
-import os, posixpath, time, calendar
+import os, sys, posixpath, time, calendar, shutil
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship
@@ -10,7 +10,7 @@ from db import *
 
 
 # Check if setup already is done - close if it is
-def check_setup():
+def check_setup(engine):
     with engine.connect() as con:
         rs = con.execute("SELECT * FROM config WHERE value LIKE '1'")
         for row in rs:
@@ -21,49 +21,59 @@ def check_setup():
 
 
 # Commit changes of a list of changes
-def commit_changes(commitList):
+def commit_changes(session,commitList):
     session.add_all(commitList)
     session.commit()
 
-# Upload file
-def upload_file(uploadFile):
-# File upload:
-# filename = secure_filename(filename)
-# md5hash = hexencode(os.urandom(16))
-# file_path = posixpath.join(md5hash, filename)
 
+# Upload file
+def upload_file(commitList,type,filename):
+    secFilename = secure_filename(filename)
+    fileFolder = hexencode(os.urandom(16))
+    folderPath = posixpath.join('/','var','uploads',fileFolder)
+    filePath = posixpath.join(folderPath,secFilename)
+    fileLocation = posixpath.join(fileFolder,secFilename)
+
+    # Make folder to contain file
+    os.makedirs(folderPath)
+    # Copy file into folder
+    shutil.copyfile('OCD/files/' + filename,filePath)
+
+    # Add file to queries
+    commitList.append(create_file(type,fileLocation))
+
+    # Return path to file
+    return fileLocation
 
 # Go through config and commit
-def config_setup(configDict):
+def config_setup(session,setupConfig):
     commitList = []
     styleHeader = ''
     configSwitch = {
-            'name' : 'ctf_name',
-            'description' : 'ctf_description',
-            'user_mode' : 'user_mode',
-            'team_size' : 'team_size',
-            'name_changes' : 'name_changes',
-            'theme_footer' : 'theme_footer',
-            }
+        'name' : 'ctf_name',
+        'description' : 'ctf_description',
+        'user_mode' : 'user_mode',
+        'team_size' : 'team_size',
+        'name_changes' : 'name_changes',
+        'theme_footer' : 'theme_footer'
+        }
 
     # Append to commit list
     def commit_to_list(key,value):
-            commitList.append(create_config(key,value))
+        commitList.append(create_config(key,value))
 
     # Converts time to epoch
-    def time_to_epoch(key):
-        return calendar.timegm(time.strptime(configDict[key],'%d/%m/%Y %H:%M'))
+    def time_to_epoch(timekey):
+        epoch_time_tz = calendar.timegm(time.strptime(timekey,'%d/%m/%Y %H:%M'))
+        return epoch_time_tz
 
     # config which is always the same and not currently alterable
     def static_config():
-        # CTF freeze scoreboard
-        commit_to_list('freeze',None)
-        # visiblitiy - public or private
-        commit_to_list('challenge_visibility','private')
+        commit_to_list('freeze',None)  # CTF freeze scoreboard
+        commit_to_list('challenge_visibility','private') # visiblitiy - public or private v
         commit_to_list('registration_visibility','public')
         commit_to_list('score_visibility','public')
-        commit_to_list('account_visibility','public')
-        # email stuff
+        commit_to_list('account_visibility','public') # email stuff v
         commit_to_list('verify_emails',None)
         commit_to_list('mail_server',None)
         commit_to_list('mail_port',None)
@@ -94,28 +104,28 @@ def config_setup(configDict):
 
     static_config()
 
-    for key in configDict.keys():
-        # Regular cases for key and value
-        try:
-            commit_to_list(configSwitch[key],configDict[key])
+    for key in setupConfig.keys():
+        try: # Regular cases for key and value
+            commit_to_list(configSwitch[key],setupConfig[key])
             continue
         except:
             pass
         
         # Special cases for key and value
         if key == 'start' or key == 'end':
-            commit_to_list(key,time.strptime(configDict[key],'%d/%m/%Y %H:%M'))
+            commit_to_list(key,time_to_epoch(setupConfig[key]))
 
         elif key == 'whitelist':
             whitelist = ''
-            for domain in configDict[key]:
+            for domain in setupConfig[key]:
                 whitelist += domain + ','
             commit_to_list('domain_whitelist',whitelist[:-1])
 
         elif key == 'logo':
+            commit_to_list('ctf_logo',upload_file(commitList,'standard',setupConfig[key]))
 
         elif key == 'theme_header' or key == 'style':
-            styleHeader += configDict[key]
+            styleHeader += setupConfig[key]
 
         else:
             continue
@@ -123,13 +133,18 @@ def config_setup(configDict):
     if styleHeader != '':
         commit_to_list('theme_header',styleHeader)
 
-    commit_changes(commitList)
+    commit_changes(session,commitList)
 
-
-# Static config which is always the same:
 
 # Go through users and commit
-#def users_setup():
+def users_setup(session,setupUsers):
+    commitList = []
+
+    for user in setupUsers.keys():
+        commitList.append(create_user(user,**setupUsers[user]))
+
+    commit_changes(session,commitList)
+
 
 # Go through pages and commit
 #def pages_setup():
@@ -138,7 +153,7 @@ def config_setup(configDict):
 #def pages_setup():
 
 # Read the setup.yml file
-def read_setup_yaml(YAMLfile)
+def read_setup_yaml(YAMLfile):
     with open(YAMLfile,'r') as setup:
         return yaml.safe_load(setup)['CTFd']
 
@@ -147,7 +162,7 @@ def main():
     # Create connection
     engine = create_engine('mysql+pymysql://root:ctfd@db/ctfd')
     # Check if setup is needed
-    check_setup()
+    check_setup(engine)
 
     # Create session
     Base.metadata.create_all(bind=engine)
@@ -155,13 +170,13 @@ def main():
     session = Session()
 
     # Read YAML
-    setupYAML = read_setup_yaml('setup.yml')
+    setupYAML = read_setup_yaml('OCD/setup.yml')
 
     # Config setup
-    config_setup(setupYAML['config'])
+    config_setup(session,setupYAML['config'])
 
     # Users setup
-    #users_setup(setupYAML['users'])
+    users_setup(session,setupYAML['users'])
 
     # Pages setup
     #pages_setup(setupYAML['pages'])
@@ -182,26 +197,11 @@ quit(0)
 # Create test challenge
 create_challenge('testname',desc,1337,'testcategory')
 
-
-# Create test admin
-create_user('admin','test','coolemail@test.xyz','admin')
-
 # Create flag
 create_flag(1,'test')
 
 # Create index page
 create_page('index','<h1>Test Index</h1>')
-
-# Create config
-# CTF start - epoch 
-create_config('start','1517443260')
-# CTF end - epoch 
-create_config('end','1675209600')
-# Extra config
-# Whitelist with comma seperated list (test.com, google.com) - or nothing 
-create_config('domain_whitelist','')
-# Create logo - or NULL - f8fdc8de45102187aa65c6173b7d8856/fear.png
-create_config('ctf_logo',None)
 
 
 

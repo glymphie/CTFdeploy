@@ -25,6 +25,7 @@ CTFd:
         - frontpage.png
     test: 
       page: test.html
+      title: nice
     test/more:
       page: more.html
 

@@ -12,12 +12,12 @@ CTFd:
       - test.com
     logo: logo.png
     style: '<style id="theme-color">
-    :root {--theme-color: #ff4422;}
-    h1, h2 {font-family: Georgia,serif;}
-    .navbar-text{color:white;}
-    .navbar{background-color: var(--theme-color) !important; color:white;}
-    .jumbotron{background-color: var(--theme-color) !important;}
-    </style>'
+            :root {--theme-color: #ff4422;}
+            h1, h2 {font-family: Georgia,serif;}
+            .navbar-text{color:white;}
+            .navbar{background-color: var(--theme-color) !important; color:white;}
+            .jumbotron{background-color: var(--theme-color) !important;}
+            </style>'
 
   pages:
     index:
@@ -26,6 +26,7 @@ CTFd:
         - frontpage.png
     test: 
       page: test.html
+      title: nice
     test/more:
       page: more.html
 

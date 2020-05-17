@@ -13,9 +13,8 @@ Descriptions for challenges and hints does support Markdown. However, due to
 python shenanigans, it is advised to used `\n` when dealing with newlines.
 Otherwise, it might not format correctly.
 
----
 
-### config
+## config
 The `config` section is basic setup and is necessary for the server to function.
 Config is defined as a dictionary with the configuration as lists with list members.
 
@@ -35,9 +34,8 @@ Config is defined as a dictionary with the configuration as lists with list memb
 `theme_footer`: A global footer which is displayed on all pages. HTML. 
 `style`: If you've configured a style sheet for another CTFd, paste it here. If you want more readable CSS, add `\n` for newlines.
 
----
 
-### pages
+## pages
 The `pages` section is used to define the pages used to introduce users to the CTF.
 Pages are defined as dictionaries named after their path and configured by lists 
 with list members. 
@@ -50,10 +48,11 @@ with list members.
 Optionally more pages can be defined.   
 `file`: Can have multiple list members. If the page uses a picture, please 
 reference it.
+`auth_required`: Does it required an account to watch the page? 0 or 1. Default is 0.
+`title`: Giving the page a title create a link in the top bar on the front page.
 
----
 
-### users
+## users
 The `users` section defines premade users. Usually admins. Users are defined as
 dictionaries with their config as lists with list members.
 
@@ -68,9 +67,8 @@ dictionaries with their config as lists with list members.
 `country`: Country displayed next to username.  
 `affiliation`: Affiliation displayed beneath username.  
 
----
 
-### challenges
+## challenges
 The `challenges` section defines premade challenges and their categories.
 Categories are defined as dictionaries and their challenges as dictionaries. The
 challenges are defined as dictionaries with their config as lists with list members. 
