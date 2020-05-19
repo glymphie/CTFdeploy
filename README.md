@@ -12,9 +12,6 @@ it.
 
 <b>Only tested on Linux.</b>
 
-# Introduction
-This is how good it is.
-
 # Guide
 
 ## Dependencies
@@ -30,7 +27,7 @@ Remote setup:
   - WIP
 
 ### YAML
-The setup is controlled by a YAML file. The different sections control how the 
+The setup is controlled by a single YAML file. The different sections control how the 
 CTF is setup. 
 
 Make sure `setup.yml` is configured to your liking. It is located in [OCD/setup.yml](OCD/setup.yml).
@@ -40,20 +37,24 @@ Make sure `setup.yml` is configured to your liking. It is located in [OCD/setup.
 ## Start
   1. Configure [setup.yml](OCD/setup.yml).
   2. Move used files into their folders.   
-    - For config - [OCD/config_files](OCD/config_files).
-    - For pages - [OCD/config_files](OCD/config_files).
-    - For challenges - [OCD/challenge_files](OCD/config_files).
+    - For config - [OCD/config_files](OCD/config_files).  
+    - For pages - [OCD/config_files](OCD/config_files).  
+    - For challenges - [OCD/challenge_files](OCD/config_files).  
   4. <b>OPTIONAL</b>: Configure docker containers in [OCD/docker_challenges](OCD/docker_challenges) and make a `docker-compose.yml` file for these containers.   
     - Edit `DOCKER_COMPOSE` in `start.sh` if you want it to start your challenge containers for you via docker-compose. 
-  5. Start the CTFd server
+  5. Start the CTFd server  
+    - `./start -s`  
 
-Start the CTFd server.
+## Stop and cleaning up
+Stopping the containers is done normally via docker-compose while in the CTFd folder.
 
-`./start -s`
+`docker-compose down`
 
-Clean up if you changed your mind and want to start over.
+Clean up CTFd if you changed your mind and want to start over. <b>Doesn't touch your config in CTFdeploy.</b>
 
 `./start -c`
+
+This resets altered files, removes CTFdeploy files, and clears the cache so CTFd can be started from fresh again.
 
 # How does it work?
 
@@ -62,8 +63,8 @@ Clean up if you changed your mind and want to start over.
 # References
 ### [CTFd](https://github.com/CTFd/CTFd)
 The project is based upon the CTFd CTF-framework and is a modification-script of 
-this software. The project is not using a modified version of CTFd but is a
-separate project.
+this software. The project is not using a forked version of CTFd but is a
+separate project related to CTFd and dependent on it.
 
 ##### [Project Plan](docs/project_plan.md)
 The project plan is for school purposes.
