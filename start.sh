@@ -95,7 +95,7 @@ echo "Done"
 
 # Case for intentions
 case $1 in
-    -h|--help) help ;;
+    -s|--start) tz; start ;;
     -c|--clean) clean ;;
-    -s|--start|*) tz; start ;;
+    -h|--help|*) help ;;
 esac
