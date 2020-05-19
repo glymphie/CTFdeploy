@@ -5,7 +5,12 @@ create queries for the database to populate it.
 
 The file starts with `CTFd:` as the root dictionary.
 
-By default, lists can only have one list member unless specified otherwise.
+By default, values are assigned as strings unless specified otherwise. Example: `key: value`.  
+This will not work:   
+```
+key: 
+  -value
+```
 
 Look at [this example](example_yaml.md) for inspiration.
 
@@ -13,7 +18,7 @@ Descriptions for challenges and hints does support Markdown.
 
 ## config
 The `config` section is basic setup and is necessary for the server to function.
-Config is defined as a dictionary with the configuration as lists with list members.
+Config is defined as a dictionary with the configuration as lists with list members or strings.
 
 ##### Must-have
 `name`: The name of the CTF.  
@@ -24,7 +29,7 @@ Config is defined as a dictionary with the configuration as lists with list memb
   
 ##### Optional
 `whitelist`: Can have multiple list members. Whitelist of email domains.    
-`team_size`: Max team size. Useful when `usermode` is `teams`.   
+`team_size`: Max team size. Useful when `usermode` is `teams`. Default is infinite.
 `name_changes`: Allow name change? `1` or `0`. Default is `1`.   
 `logo`: Filename, use a logo instead of the CTF `name`. Stored in `OCD/config_files`.   
 `theme_header`: Filename, a global HTML header which is displayed on all pages. Stored in `OCD/config_files`.   
@@ -34,7 +39,7 @@ Config is defined as a dictionary with the configuration as lists with list memb
 
 ## users
 The `users` section defines premade users. Usually admins. Users are defined as
-dictionaries with their config as lists with list members.
+dictionaries with their config as lists with list members or strings.
 
 ##### Must-have
 `password`: Password used to log into the account.    
@@ -51,10 +56,10 @@ dictionaries with their config as lists with list members.
 ## pages
 The `pages` section is used to define the pages used to introduce users to the CTF.
 Pages are defined as dictionaries named after their path and configured by lists 
-with list members. 
+with list members or strings. 
 
 ##### Must-have
-`index`: An index is necessary for introduction on the website.  
+`index`: An index is necessary for introduction on the website.   
 `page`: Filename, the page which is to be displayed according to the path. Stored in `OCD/pages_files`. 
 
 ##### Optional
@@ -67,7 +72,7 @@ Optionally more pages can be defined.
 ## challenges
 The `challenges` section defines premade challenges and their categories.
 Categories are defined as dictionaries and their challenges as dictionaries. The
-challenges are defined as dictionaries with their config as lists with list members. 
+challenges are defined as dictionaries with their config as lists with list members or strings. 
 Categories must have a challenge associated with them.
 
 ##### Must-have
@@ -87,14 +92,15 @@ hints have to be named differently.
 
 ##### flag
 The `flag` is necessary for a challenge to be solvable. It is defined as a
-dictionary with its config as lists with list members.  
+dictionary with its config as lists with list members or strings.   
 `flag`: This is the string representing the flag. Must be present.   
 `type`: Can be either `static` or `regex`. Default is `static`.  
 `case`: Can be either `sensitive` or `insensitive`. Default is `sensitive`. 
 
 ##### hint
 The `hint` is to help with the challenge. Multiple hints can be included in one
-challenge if named differently eg. `hint1`, `hint_exp`, etc.   
+challenge if named differently eg. `hint1`, `hint_exp`, etc. Defnied as a list with 
+list members or strings.  
 `description`: Filename, description of the hint which is shown to the user. Must be
 present. Stored in `OCD/challenge_files`.   
 `cost`: Spend points to show the hint. Default is `0`.  

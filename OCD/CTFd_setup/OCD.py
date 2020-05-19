@@ -341,12 +341,3 @@ if __name__ == '__main__':
     main()
 
 quit(0)
-
-
-# Create test challenge
-create_challenge('testname',desc,1337,'testcategory')
-
-# Create flag
-create_flag(1,'test')
-
-
