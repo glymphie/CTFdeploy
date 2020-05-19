@@ -3,7 +3,6 @@
 # Are you using docker-compose challenge containers? Set to 1.
 CHALLENGE_COMPOSE=0
 
-
 # Help
 help(){
 USAGE="Usage: $0 [OPTION]
