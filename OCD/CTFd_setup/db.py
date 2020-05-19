@@ -6,35 +6,6 @@ from CTFd.utils.crypto import hash_password
 
 Base = declarative_base()
 
-# Challenges
-class Challenges(Base):
-    __tablename__ = "challenges"
-    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
-    name = Column('name', VARCHAR(80))
-    description = Column('description', TEXT)
-    max_attempts = Column('max_attempts', INTEGER(11))
-    value = Column('value', INTEGER(11))
-    category = Column('category', VARCHAR(80))
-    type = Column('type', VARCHAR(80))
-    state = Column('state', VARCHAR(80), nullable=False)      
-    requirements = Column('requirements', JSON)
-
-
-def create_challenge(name,description,value,category,type='standard',state='visible',max_attempts=0,requirements=None):
-    challenge = Challenges()
-
-    challenge.name = name
-    challenge.category = category
-    challenge.description = description
-    challenge.value = value
-    challenge.type = type
-    challenge.state = state
-    challenge.requirements = requirements
-    challenge.max_attempts = max_attempts
-
-    return challenge
-
-
 # Config
 class Config(Base):
     __tablename__ = "config"
@@ -74,17 +45,33 @@ class Users(Base):
     created = Column('created',DATETIME)    
 
 
-def create_user(name,password,email,type,hidden=1,banned=0,verified=0,team_id=None,secret=None,website=None,affiliation=None,country=None,bracket=None,oauth_id=None,created=None):
+def create_user(name,**kwargs):
     user = Users()
 
     user.name = name
-    user.password = hash_password(password)
-    user.email = email
-    user.type = type
-    user.website = website
-    user.affiliation = affiliation
-    user.country = country
-    user.hidden = hidden
+    user.password = hash_password(kwargs['password'])
+    user.email = kwargs['email']
+    user.type = kwargs['type']
+
+    user.website = None
+    user.affiliation = None
+    user.country = None
+    user.hidden = 1
+    user.verified = 0
+    user.banned = 0
+
+    if 'website' in kwargs:
+        user.website = kwargs['website']
+    if 'affiliation' in kwargs:
+        user.affiliation = kwargs['affiliation']
+    if 'country' in kwargs:
+        user.country = kwargs['country']
+    if 'hidden' in kwargs:
+        user.hidden = kwargs['hidden']
+    if 'verified' in kwargs:
+        user.verified = kwargs['verified']
+    if 'banned' in kwargs:
+        user.banned = kwargs['banned']
 
     return user
 
@@ -102,15 +89,22 @@ class Pages(Base):
     auth_required = Column('auth_required',TINYINT(1)) 
 
 
-def create_page(route,content,title=None,draft=0,hidden=None,auth_required=None):
+def create_page(route,content,**kwargs):
     page = Pages()
 
-    page.title = title
     page.route = route
     page.content = content
-    page.draft = draft
-    page.hidden = hidden
-    page.auth_required = auth_required
+
+    page.title = None
+    page.auth_required = None
+
+    page.draft = 0
+    page.hidden = 0
+
+    if 'title' in kwargs:
+        page.title = kwargs['title']
+    if 'auth_required' in kwargs:
+        page.auth_required = kwargs['auth_required']
 
     return page
 
@@ -135,6 +129,42 @@ def create_file(type,location,challenge_id=None):
     return file
 
 
+# Challenges
+class Challenges(Base):
+    __tablename__ = "challenges"
+    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
+    name = Column('name', VARCHAR(80))
+    description = Column('description', TEXT)
+    max_attempts = Column('max_attempts', INTEGER(11))
+    value = Column('value', INTEGER(11))
+    category = Column('category', VARCHAR(80))
+    type = Column('type', VARCHAR(80))
+    state = Column('state', VARCHAR(80), nullable=False)      
+    requirements = Column('requirements', JSON)
+
+
+def create_challenge(name,category,description,value,**kwargs):
+    challenge = Challenges()
+
+    challenge.name = name
+    challenge.category = category
+    challenge.description = description
+    challenge.value = value
+
+    challenge.max_attempts = 0
+    challenge.requirements = None
+
+    if 'requirements' in kwargs:
+        challenge.requirements = kwargs['requirements']
+    if 'max_attempts' in kwargs:
+        challenge.max_attempts = kwargs['max_attempts']
+
+    challenge.state = 'visible'
+    challenge.type = 'standard'
+
+    return challenge
+
+
 # Flags
 class Flags(Base):
     __tablename__ = "flags"
@@ -145,13 +175,19 @@ class Flags(Base):
     content = Column('content',TEXT)
     data = Column('data',TEXT)
 
-def create_flag(challenge_id,content,type='static',data=None):
+def create_flag(challenge_id,content,**kwargs):
     flag = Flags()
 
     flag.challenge_id = challenge_id
-    flag.type = type
     flag.content = content
-    flag.data = data
+
+    flag.type = 'static'
+    flag.data = None
+
+    if 'type' in kwargs:
+        flag.type = kwargs['type']
+    if 'case' in kwargs:
+        flag.data = kwargs['case']
 
     return flag
 
@@ -167,13 +203,18 @@ class Hints(Base):
     cost = Column('cost',INTEGER(11))
     requirements = Column('requirements',JSON)
 
-def create_hint(challenge_id,content,cost=0,type='standard'):
+def create_hint(challenge_id,content,**kwargs):
     hint = Hints()
 
     hint.challenge_id = challenge_id
     hint.content = content
-    hint.cost = cost
-    hint.type = type
+    hint.cost = 0
+    hint.type = 'standard'
+
+    if 'cost' in kwargs:
+        hint.cost = kwargs['cost']
+    if 'type' in kwargs:
+        hint.type = kwargs['type']
 
     return hint
 
