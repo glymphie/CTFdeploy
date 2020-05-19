@@ -86,8 +86,8 @@ Categories must have a challenge associated with them.
 required to be solved before this challenge is shown.  
 `tag`: Can have multiple list members. Tags to be shown when viewing the
 challenge.  
-`file`: Can have multiple list members. Files which are used in the challenge.  
-`hint`: Hints are defined as a lists with list member as its config. Multiple
+`file`:Filename, can have multiple list members. Files which are used in the challenge. Stored in `OCD/challenge_files`.  
+`hint`:Hints are defined as a lists with list member as its config. Multiple
 hints have to be named differently.  
 
 ##### flag
