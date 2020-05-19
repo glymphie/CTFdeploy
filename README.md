@@ -22,6 +22,9 @@ Local setup:
   1. Docker, [Install docker](https://docs.docker.com/get-docker/).
   2. Docker-compose, [Install docker-compose](https://docs.docker.com/compose/install/).
   3. CTFd, pull CTFd in CTFdeploy as a submodule: `git submodule update --init --recursive`
+  4. Python3 and PyYAML
+    - `python3 -m pip install pyyaml`
+    - This is used to check for syntax errors in setup.yml before deployment.
 
 Remote setup:
   - WIP
@@ -30,22 +33,26 @@ Remote setup:
 The setup is controlled by a YAML file. The different sections control how the 
 CTF is setup. 
 
-Make sure `setup.yml` is configured to your liking. It is located in [OCD](OCD/setup.yml).
+Make sure `setup.yml` is configured to your liking. It is located in [OCD/setup.yml](OCD/setup.yml).
 
 ### [Documentation](docs/yaml_setup.md).
 
 ## Start
-    1. Configure [setup.yml](OCD/setup.yml).
-    2. Move used files into [files](OCD/files).
-    3. Move used pages into [pages](OCD/pages).
-    4. <b>OPTIONAL</b>: Configure docker containers in [pages](OCD/docker_challenges) and make
-       a `docker-compose.yml` file for these containers.
-        -  Edit `DOCKER_COMPOSE` in `start.sh` if you want it to start your challenge containers 
-           for you via docker-compose. 
+  1. Configure [setup.yml](OCD/setup.yml).
+  2. Move used files into [files](OCD/files).
+  3. Move used pages into [pages](OCD/pages).
+  4. <b>OPTIONAL</b>: Configure docker containers in [pages](OCD/docker_challenges) and make
+     a `docker-compose.yml` file for these containers.
+    -  Edit `DOCKER_COMPOSE` in `start.sh` if you want it to start your challenge containers 
+       for you via docker-compose. 
 
 Start the CTFd server.
 
-`./start`
+`./start -s`
+
+Clean up if you changed your mind and want to start over.
+
+`./start -c`
 
 # How does it work?
 
