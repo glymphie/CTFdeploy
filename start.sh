@@ -83,11 +83,11 @@ WSITE=$(curl -sL localhost:8000)
 
 case "$WSITE"
 in 
-    *id=\"setup-form\"*) echo 'Skipping setup' ; 
+    *id=\"setup-form\"*) echo '\nSkipping setup' ; 
                          docker-compose rm -sf cache ; 
                          rm -rf .data/redis ;
                          docker-compose up -d cache > /dev/null ;;
-    *) ;;
+    *) echo '\nSetup already done' ;;
 esac
 
 echo "Done"
