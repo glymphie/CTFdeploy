@@ -44,6 +44,7 @@ tail -n 1 /etc/localtime |\
 
 # Start
 start(){
+echo "Copying files into CTFd"
 cp -r OCD CTFd
 
 # In CTFd directory
