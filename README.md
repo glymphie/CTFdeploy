@@ -14,8 +14,8 @@ it.
 
 # Guide
 
-## Dependencies
-Local setup:
+### Dependencies
+##### Local setup:
   1. Docker, [Install docker](https://docs.docker.com/get-docker/).
   2. Docker-compose, [Install docker-compose](https://docs.docker.com/compose/install/).
   3. CTFd, pull CTFd in CTFdeploy as a submodule: `git submodule update --init --recursive`
@@ -25,7 +25,7 @@ Local setup:
     - `python3 -m pip install pycountry`  
       - This is used to check the countrycode given to users when going through `setup.yml` syntax.
 
-Remote setup:
+##### Remote setup:
   - WIP
 
 ### YAML
