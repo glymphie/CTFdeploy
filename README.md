@@ -20,10 +20,9 @@ it.
   2. Docker-compose, [Install docker-compose](https://docs.docker.com/compose/install/).
   3. CTFd, pull CTFd in CTFdeploy as a submodule: `git submodule update --init --recursive`
   4. Python3, PyYAML, pycountry  
-    - `python3 -m pip install pyyaml`   
-      - This is used to check for syntax errors in `setup.yml` before deployment.   
-    - `python3 -m pip install pycountry`  
-      - This is used to check the countrycode given to users when going through `setup.yml` syntax.
+    - `python3 -m pip install -r requirements.txt`   
+        - `PyYAML`: Used to check for syntax errors in `setup.yml` before deployment.  
+        - `pycountry`: Used to check the countrycode given to users when going through `setup.yml` syntax.
 
 ##### Remote setup:
   - WIP
