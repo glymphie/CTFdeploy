@@ -48,8 +48,9 @@ dictionaries with their config as lists with list members or strings.
 
 ##### Optional
 `hidden`: Is the user hidden? `0` or `1`. Default is `1`.  
-`website`: Website displayed next to username.  
-`country`: Countrycode, country displayed next to username. Will show as NULL if countrycode is invalid.  
+`website`: Website displayed next to username. Must include `https://` or `http://` at
+the beginning.   
+`country`: Countrycode, country displayed next to username. Format is [ISO](https://www.iso.org/obp/ui) e.g. `US`.   
 `affiliation`: Affiliation displayed beneath username.  
 
 
