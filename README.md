@@ -61,7 +61,11 @@ This resets altered files, removes CTFdeploy files, and clears the cache so CTFd
 
 ### [Documentation](docs/setup_doc.md).
 
+# Notice
+<b>CTFdeploy will alter the following files in CTFd: requirements.txt, docker-compose.yml, and docker-entrypoint.sh. This is to integrate CTFdeploy, read through the documentation and read the source code if you are in doubt about either integrity or safety.</b>
+
 # References
+
 ### [CTFd](https://github.com/CTFd/CTFd)
 The project is based upon the CTFd CTF-framework and is a modification-script of 
 this software. The project is not using a forked version of CTFd but is a

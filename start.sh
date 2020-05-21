@@ -113,9 +113,14 @@ echo 'Docker challenge containers done'
 }
 
 
+# cd to start.sh location
+cd $(dirname $0)
+
 # Case for intentions
 case $1 in
     -s|--start) start; dockerchallenges;;
     -c|--clean) clean ;;
     -h|--help|*) help ;;
 esac
+
+exit 0
