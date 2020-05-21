@@ -18,7 +18,8 @@ When the script starts with the -s flag:
   7. If `CHALLENGE_COMPOSE` is set to `1`, it will try to start up the containers stored in `OCD/docker_challenges`. This is just for convenience and can be skipped if you prefer to start the containers separately.
 
 ### ./start.sh -c
-<b>Make sure to stop CTFd, MariaDB, and redis container before cleaning.</b>  
+<b>Make sure to stop CTFd, MariaDB, and redis container before cleaning.</b>
+
 When the script starts with the -c flag:  
   1. Remove `.data` in `CTFd` - this is where all data is stored from the containers.
   2. Reset to master in `CTFd`.
