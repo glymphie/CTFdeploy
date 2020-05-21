@@ -39,7 +39,7 @@ Make sure `setup.yml` is configured to your liking. It is located in [OCD/setup.
   1. Configure [setup.yml](OCD/setup.yml).
   2. Move used files into their folders.   
     - For config - [OCD/config_files](OCD/config_files).  
-    - For pages - [OCD/config_files](OCD/config_files).  
+    - For pages - [OCD/pages_files](OCD/config_files).  
     - For challenges - [OCD/challenge_files](OCD/config_files).  
   4. <b>OPTIONAL</b>: Configure docker containers in [OCD/docker_challenges](OCD/docker_challenges) and make a `docker-compose.yml` file for these containers.   
     - Edit `DOCKER_COMPOSE` in `start.sh` if you want it to start your challenge containers for you via docker-compose. 
