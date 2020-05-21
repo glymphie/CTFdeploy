@@ -20,16 +20,16 @@ the project.
 
 The challenges should be populated in the CTFd database so no manual setup is
 required.
-- [ ] Population of challenges in CTFd.
+- [x] Population of challenges in CTFd.
 
 Custom index page deployment as with challenges.
-- [ ] Show custom index page.
+- [x] Show custom index page.
 
 All challenges which need to be hosted in docker containers should be deployed.
-- [ ] Deployment of challenges in docker containers.
+- [x] Deployment of challenges in docker containers.
 
 Testing script setup for 'completed' project.
-- [ ] Automated deployment of CTFd.
+- [x] Automated deployment of CTFd.
 
 #### Extra goals
 Default is HTTP, HTTPS would be nice.

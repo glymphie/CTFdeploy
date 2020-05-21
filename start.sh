@@ -24,6 +24,7 @@ printf "%s" "$USAGE"
 exit 0
 }
 
+
 # Delete 
 clean(){
 cd CTFd
@@ -43,7 +44,11 @@ tail -n 1 /etc/localtime |\
 
 # Start
 start(){
+echo "Checking setup.yml syntax"
+python3 OCD/CTFd_setup/check_yaml OCD/setup.yml || exit 1
+
 echo "Copying files into CTFd"
+tz
 cp -r OCD CTFd
 
 # In CTFd directory
@@ -89,12 +94,28 @@ in
     *) echo '\nSetup already done' ;;
 esac
 
-echo "Done"
+echo "CTFd setup done"
 }
+
+
+dockerchallenges(){
+cd ..
+
+# In CTFdeploy
+[ $CHALLENGE_COMPOSE -eq 0 ] && exit 0
+[ ! -f OCD/docker_challenges/docker-compose.yml ] || echo 'No docker-compose.yml found in OCD/docker_challenges. Exiting.' && exit 1
+cd OCD/docker_challenges
+
+echo 'Starting challenge containers'
+docker-compose up -d
+
+echo 'Docker challenge containers done'
+}
+
 
 # Case for intentions
 case $1 in
-    -s|--start) tz; start ;;
+    -s|--start) start; dockerchallenges;;
     -c|--clean) clean ;;
     -h|--help|*) help ;;
 esac
