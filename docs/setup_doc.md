@@ -8,7 +8,7 @@ The orchestration of the whole setup is controlled by this simple script. The fi
 When the script starts with the -s flag:  
   1. Is runs `check_yaml.py` against `setup.yml`. This should capture any mistakes which were made when creating the `setup.yml` file. If `setup.yml` seems fine it will continue. Or else an error will be displayed with a message on what seems wrong with `setup.yml`.
   2. Copy all the files into `CTFd`. Another step here is to check what timezone the computer is set to. This is to account for time difference artifacts in CTFd and make sure the time set is to the correct timezone. It essentially just looks in `/etc/localtime` and parses it to `OCD.py` which will do calculations according to the timezone.
-  3. Requirements are pushed to `CTFd`: 
+  3. Requirements are pushed to `CTFd`:   
     - PyYAML is required on the `CTFd` docker container.   
     - The `CTFd` `docker-entrypoint.sh` needs to call `OCD.py` when it starts up, so this is pushed to `docker-entrypoint.sh`.  
     - Last is a current issue with `CTFd` and `MariaDB`, a wrong version is pulled from docker-hub, this is corrected.  
