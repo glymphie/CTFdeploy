@@ -16,7 +16,7 @@ class Error:
 class Colors:
     FAIL = '\033[1;31m'
     SUCCES = '\033[1;32m'
-    NORMAL = '\033[1;31m'
+    NORMAL = '\033[0m'
 
 
 # Read the setup.yml file

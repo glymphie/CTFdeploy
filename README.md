@@ -44,7 +44,7 @@ Make sure `setup.yml` is configured to your liking. It is located in [OCD/setup.
   4. <b>OPTIONAL</b>: Configure docker containers in [OCD/docker_challenges](OCD/docker_challenges) and make a `docker-compose.yml` file for these containers.   
     - Edit `DOCKER_COMPOSE` in `start.sh` if you want it to start your challenge containers for you via docker-compose. 
   5. Start the CTFd server  
-    - `./start -s`  
+    - sudo `./start -s`  
 
 ## Stop and cleaning up
 Stopping the containers is done normally via docker-compose while in the CTFd folder.
@@ -53,7 +53,7 @@ Stopping the containers is done normally via docker-compose while in the CTFd fo
 
 Clean up CTFd if you changed your mind and want to start over. <b>Doesn't touch your config in CTFdeploy.</b>
 
-`./start -c`
+`sudo ./start -c`
 
 This resets altered files, removes CTFdeploy files, and clears the cache so CTFd can be started from fresh again.
 

@@ -2,7 +2,8 @@
 An overview of what is happening and why some decisions were made in the creation of these scripts.
 
 ## start.sh
-The orchestration of the whole setup is controlled by this simple script. The first thing the script does is check what flag is set and execute accordingly.
+The orchestration of the whole setup is controlled by this simple script. The first thing the script does is check what flag is set and execute accordingly.   
+<b>`start.sh` needs sudo/root to remove some root owned files, .data in CTFd. This is to speed up the deployment.</b>
 
 ### ./start.sh -s
 When the script starts with the -s flag:  
@@ -22,8 +23,7 @@ When the script starts with the -s flag:
 
 When the script starts with the -c flag:  
   1. Remove `.data` in `CTFd` - this is where all data is stored from the containers.
-  2. Reset to master in `CTFd`.
-  3. Clean all files not tracked in `CTFd`.
+  2. Clean all files not tracked in `CTFd`.
 
 ## OCD.py
 The database creation is handled by `OCD.py` while in the `CTFd` docker container. It goes through the `setup.yml` file and creates queries according to what is wanted in the setup of CTFd. The reason for `check_yaml.py` is due to the fact some queries must be present for CTFd to work properly. It will still check if the `optional` setup configurations are set and make queries accordingly. `OCD.py` uses [sqlalchemy](https://www.sqlalchemy.org/) to construct queries just as `CTFd` would do while it's running. 

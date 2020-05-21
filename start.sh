@@ -29,7 +29,6 @@ exit 0
 clean(){
 cd CTFd
 [ -d .data ] && echo "Removing .data" && rm -rf .data 
-git reset --hard origin
 git clean -df
 }
 

@@ -16,6 +16,8 @@ Look at [this example](example_yaml.md) for inspiration.
 
 Descriptions for challenges and hints does support Markdown.
 
+Files can be sorted into folders, as long as these folders are included in the route. `path/to/file`
+
 ## config
 The `config` section is basic setup and is necessary for the server to function.
 Config is defined as a dictionary with the configuration as lists with list members or strings.
