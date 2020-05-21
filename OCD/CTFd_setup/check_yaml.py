@@ -11,13 +11,12 @@ class Error:
     def print_section(self):
         return 'Under ' + self.section + ': '
 
+
 # Colorcode output
 class Colors:
     FAIL = '\033[1;31m'
     SUCCES = '\033[1;32m'
     NORMAL = '\033[1;31m'
-    
-
 
 
 # Read the setup.yml file
@@ -39,7 +38,7 @@ def check_keys(YAMLfile):
     # Quit if error is 1
     def check_error(func):
         def error_quit(*args,**kwargs):
-            func(*args)
+            func(*args,**kwargs)
             if error.error == 1:
                 print(Colors().NORMAL,end='')
                 quit(1)
@@ -93,58 +92,59 @@ def check_keys(YAMLfile):
     # Check if timeformat is correct
     def check_time(key,timevalue):
         try:
-            if calendar.timegm(time.strptime(timevalue,'%d/%m/%Y %H:%M')) >= 0:
-                return
-            print(error.print_section() + key + ', must be set to a time later than 01/01/1970 00:00')
+            if not calendar.timegm(time.strptime(timevalue,'%d/%m/%Y %H:%M')) >= 0:
+                print(error.print_section() + key + ', must be set to a time later than 01/01/1970 00:00')
+                error.error = 1
         except ValueError:
             print(error.print_section() + key + ', is formatted incorrectly')
-        error.error = 1
+            error.error = 1
 
     
     # Check if email domains are formatted correctly
     def check_whitelist(key,domains):
         for domain in domains:
             try:
-                if re.match(re.compile('^(([a-zA-Z]*\d+\.?)*(\d*[a-zA-Z]+\.?)*)+[^\.]\.[a-zA-Z]+$'),domain):
-                    continue
-                print(error.print_section() + key + ', is formatted incorrectly, ' + domain)
+                if not re.match(re.compile('^(([a-zA-Z]*\d+\.?)*(\d*[a-zA-Z]+\.?)*)+[^\.]\.[a-zA-Z]+$'),domain):
+                    print(error.print_section() + key + ', is formatted incorrectly, ' + domain)
+                    error.error = 1
             except TypeError:
                 print(error.print_section() + key + ', please check your whitelist members')
-            error.error = 1
+                error.error = 1
 
 
     # Check if email is formatted correctly - stolen from http://emailregex.com/
     def check_email(key,email):
-        if re.match(re.compile("""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"""),email):
-            return
-        print(error.print_section() + key + ', is formatted incorrectly, ' + email)
-        error.error = 1
+        if not re.match(re.compile("""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"""),email):
+            print(error.print_section() + key + ', is formatted incorrectly, ' + email)
+            error.error = 1
         
 
     # Check if file exists
     def check_file(key,folder,keyfile):
-        if os.path.isfile(folder + keyfile):
-            return
-        print(error.print_section() + key + ', file does not exist, ' + keyfile)
-        error.error = 1
+        if not os.path.isfile(folder + keyfile):
+            print(error.print_section() + key + ', file does not exist, ' + keyfile)
+            error.error = 1
 
     
     # Check if website is valid format - stolen from https://www.regextester.com/93652
     def check_website(key,website):
-        if re.match(re.compile('^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$'),website):
-            return
-        print(error.print_section() + key + ', is formatted incorrectly, ' + website)
-        error.error = 1
+        if not re.match(re.compile('^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$'),website):
+            print(error.print_section() + key + ', is formatted incorrectly, ' + website)
+            error.error = 1
 
 
     # Check if countrycode is valid
     def check_countrycode(key,countrycode):
-        if pycountry.countries.get(alpha_2=countrycode) is not None:
-            return
-        print(error.print_section() + key + ', is formatted incorrectly, ' + countrycode)
-        error.error = 1
+        if pycountry.countries.get(alpha_2=countrycode) is None:
+            print(error.print_section() + key + ', is formatted incorrectly, ' + countrycode)
+            error.error = 1
 
 
+    # Check if challenge exists
+    def check_challenge(key,requirement,challengesList):
+        if requirement not in challengesList:
+            print(error.print_section() + key + ', this challenge is not defined in the setup, ' + requirement)
+            error.error = 1
     # Checks for syntax
 
     # Key configs - config, users, pages, and challenges
@@ -232,6 +232,7 @@ def check_keys(YAMLfile):
                 check_countrycode('country',usersKeys[user]['country'])
 
 
+        # Loop through all users
         usersKeys = YAMLfile['CTFd']['users']
         for user in usersKeys:
             error.section = 'users, ' + user
@@ -256,6 +257,7 @@ def check_keys(YAMLfile):
                 check_if_vorv('auth_required',pagesKeys[page]['auth_required'],1,0)
 
     
+        # Loop through all pages
         pagesKeys = YAMLfile['CTFd']['pages']
         check_config_musts(pagesKeys,'index')
         for page in pagesKeys:
@@ -301,12 +303,15 @@ def check_keys(YAMLfile):
 
             if 'max_attempts' in challengesKeys[category][challenge]:
                 check_if_int('max_attempts',challengesKeys[category][challenge]['max_attempts'])
+
             if 'file' in challengesKeys[category][challenge]:
                 for challengeFile in challengesKeys[category][challenge]['file']:
                     check_file('file','OCD/challenge_files/',challengeFile)
-            # TODO
+
             if 'requirements' in challengesKeys[category][challenge]:
-                pass
+                for requirement in challengesKeys[category][challenge]['requirements']:
+                    check_challenge('requirements',requirement,challengesList)
+
             
             hintmatches = [hint for hint in challengesKeys[category][challenge] if re.match(re.compile('^hint*'),hint)]
             for hint in hintmatches:
@@ -316,11 +321,14 @@ def check_keys(YAMLfile):
 
 
         challengesKeys = YAMLfile['CTFd']['challenges']
-        # TODO
-        challengesList = [challengesKeys[challenge] for challenge in [category for category in challengesKeys]]
-        print(challengesList)
-        # TODO
 
+        # Get a list of all challenges
+        challengesList = []
+        for challenges in [challengesKeys[challenge] for challenge in [category for category in challengesKeys]]:
+            for name in challenges.keys():
+                challengesList.append(name)
+
+        # Loop through all the challenges
         for category in challengesKeys:
             for challenge in challengesKeys[category]:
                 error.section = 'challenges, ' + category + ', ' + challenge
@@ -350,9 +358,9 @@ def check_keys(YAMLfile):
 
 
 def main():
+    print(Colors().FAIL,end='')
     YAMLfile = read_setup_yaml(sys.argv[1])
 
-    print(Colors().FAIL,end='')
     check_keys(YAMLfile)
 
     print(Colors().SUCCES,end='')

@@ -45,16 +45,16 @@ tail -n 1 /etc/localtime |\
 # Start
 start(){
 echo "Checking setup.yml syntax"
-python3 OCD/CTFd_setup/check_yaml OCD/setup.yml || exit 1
+python3 OCD/CTFd_setup/check_yaml.py OCD/setup.yml || exit 1
 
 echo "Copying files into CTFd"
-tz
 cp -r OCD CTFd
 
 # In CTFd directory
 cd CTFd
 
 # Setup for entry
+tz
 mv OCD/CTFd_setup/OCD.py .
 mv OCD/CTFd_setup/db.py .
 
