@@ -28,8 +28,10 @@ exit 0
 # Delete 
 clean(){
 cd CTFd
+docker-compose down
 [ -d .data ] && echo "Removing .data" && rm -rf .data 
 git clean -df
+git reset --hard
 }
 
 
