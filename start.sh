@@ -28,7 +28,7 @@ exit 0
 # Delete 
 clean(){
 cd CTFd
-docker-compose down || echo 'You need to pull the submodule down first'
+docker-compose down || echo 'You need to pull the submodule down first' && exit 1
 [ -d .data ] && echo "Removing .data" && rm -rf .data 
 git clean -df
 git reset --hard
