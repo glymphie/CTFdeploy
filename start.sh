@@ -26,7 +26,7 @@ exit 0
 
 
 error(){
-print '%s\n' "$1"
+printf '%s\n' "$1"
 exit 1
 }
 
