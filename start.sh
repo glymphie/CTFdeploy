@@ -113,7 +113,7 @@ cd ..
 
 # In CTFdeploy
 [ $CHALLENGE_COMPOSE -eq 0 ] && exit 0
-[ ! -f OCD/docker_challenges/docker-compose.yml ] || error 'No docker-compose.yml found in OCD/docker_challenges. Exiting.'
+[ -f OCD/docker_challenges/docker-compose.yml ] || error 'No docker-compose.yml found in OCD/docker_challenges. Exiting.'
 cd OCD/docker_challenges || error 'OCD/docker_challenges is missing' 
 
 printf 'Starting challenge containers\n'
