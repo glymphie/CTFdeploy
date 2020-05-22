@@ -25,10 +25,16 @@ exit 0
 }
 
 
+error(){
+print '%s\n' "$1"
+exit 1
+}
+
+
 # Delete 
 clean(){
-cd CTFd || (printf 'You need CTFd to use this script\n' && exit 1)
-docker-compose down || (printf 'You need to pull the submodule down first\n' && exit 1)
+cd CTFd || error 'You need CTFd to use this script'
+docker-compose down || error 'You need to pull the submodule down first'
 [ -d .data ] && printf 'Removing .data\n' && rm -rf .data 
 git clean -df
 git reset --hard
@@ -50,7 +56,7 @@ printf 'Copying files into CTFd\n'
 cp -r OCD CTFd
 
 # In CTFd directory
-cd CTFd || (printf 'You need CTFd to use this script\n' && exit 1)
+cd CTFd || error 'You need CTFd to use this script'
 
 # Setup for entry
 tz
@@ -86,11 +92,11 @@ WSITE=$(curl -sL localhost:8000)
 
 case "$WSITE"
 in 
-    *id=\"setup-form\"*) printf '\nSkipping setup' ; 
+    *id=\"setup-form\"*) printf '\nSkipping setup\n' ; 
                          docker-compose rm -sf cache ; 
                          rm -rf .data/redis ;
                          docker-compose up -d cache > /dev/null ;;
-    *) printf '\nSetup already done' ;;
+    *) printf '\nSetup already done\n' ;;
 esac
 
 printf 'CTFd setup done\n'
@@ -102,8 +108,8 @@ cd ..
 
 # In CTFdeploy
 [ $CHALLENGE_COMPOSE -eq 0 ] && exit 0
-[ ! -f OCD/docker_challenges/docker-compose.yml ] || (printf 'No docker-compose.yml found in OCD/docker_challenges. Exiting.\n' && exit 1)
-cd OCD/docker_challenges || (printf 'OCD/docker_challenges is missing\n' && exit 1)
+[ ! -f OCD/docker_challenges/docker-compose.yml ] || error 'No docker-compose.yml found in OCD/docker_challenges. Exiting.'
+cd OCD/docker_challenges || error 'OCD/docker_challenges is missing' 
 
 printf 'Starting challenge containers\n'
 docker-compose up -d
@@ -113,7 +119,7 @@ printf 'Docker challenge containers done\n'
 
 
 # cd to start.sh location
-cd "$(dirname "$0")" || (printf 'Something is wrong..\n' && exit 1)
+cd "$(dirname "$0")" || error 'Something is wrong..'
 
 # Case for intentions
 case $1 in
