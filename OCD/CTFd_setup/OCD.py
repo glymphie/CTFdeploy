@@ -54,15 +54,10 @@ def config_setup(session,setupConfig):
     # Converts time to epoch
     def time_to_epoch(timekey):
         with open('OCD/config_files/tz','r') as tz:
-            timediff = tz.readline()[:-1].split(':')
-            if len(timediff) <= 1:
-                diff = int(timediff[0]) * 60 * 60
-            if len(timediff) == 2:
-                if timediff[0][0] == '-':
-                    diff -= int(timediff[1]) * 60
-                else:
-                    diff += int(timediff[1]) * 60
-            return (calendar.timegm(time.strptime(timekey,'%d/%m/%Y %H:%M')) + diff)
+            diff = 0
+            if tz.read()[:-1] == '1':
+                diff = 3600
+            return (calendar.timegm(time.strptime(timekey,'%d/%m/%Y %H:%M')) - diff)
 
 
     # config which is always the same and not currently alterable

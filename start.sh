@@ -35,9 +35,7 @@ git clean -df
 
 # Timezone annoyance, needed for accurate timesetup in CTFd
 tz(){
-tail -n 1 /etc/localtime |\
-    sed -En 's/\w*([-+]?[0-9]*:?[0-9]*)\w*.*/\1/p' \
-    > OCD/config_files/tz
+python3 OCD/CTFd_setup/timezone.py > OCD/config_files/tz
 }
 
 

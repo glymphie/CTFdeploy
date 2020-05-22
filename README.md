@@ -23,6 +23,7 @@ it.
     - `python3 -m pip install -r requirements.txt`   
         - `PyYAML`: Used to check for syntax errors in `setup.yml` before deployment.  
         - `pycountry`: Used to check the countrycode given to users when going through `setup.yml` syntax.
+  5. Curl, install either via your package manager or from source.
 
 ##### Remote setup:
   - WIP
