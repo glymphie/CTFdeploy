@@ -20,16 +20,16 @@ Remember to configure setup.yml.
 Set 'CHALLENGE_COMPOSE=1' if 'docker-compose up' for challenges is wanted.
 " 
 
-printf "%s" "$USAGE"
+printf '%s\n' "$USAGE"
 exit 0
 }
 
 
 # Delete 
 clean(){
-cd CTFd
-docker-compose down || echo 'You need to pull the submodule down first' && exit 1
-[ -d .data ] && echo "Removing .data" && rm -rf .data 
+cd CTFd || printf 'You need CTFd to use this script\n' && exit 1
+docker-compose down || printf 'You need to pull the submodule down first\n' && exit 1
+[ -d .data ] && printf 'Removing .data\n' && rm -rf .data 
 git clean -df
 git reset --hard
 }
@@ -43,14 +43,14 @@ python3 OCD/CTFd_setup/timezone.py > OCD/config_files/tz
 
 # Start
 start(){
-echo "Checking setup.yml syntax"
+printf 'Checking setup.yml syntax\n'
 python3 OCD/CTFd_setup/check_yaml.py OCD/setup.yml || exit 1
 
-echo "Copying files into CTFd"
+printf 'Copying files into CTFd\n'
 cp -r OCD CTFd
 
 # In CTFd directory
-cd CTFd
+cd CTFd || printf 'You need CTFd to use this script\n' && exit 1
 
 # Setup for entry
 tz
@@ -58,7 +58,7 @@ mv OCD/CTFd_setup/OCD.py .
 mv OCD/CTFd_setup/db.py .
 
 # Needed for YAML in docker
-echo "PyYAML==3.13" >> requirements.txt
+printf 'PyYAML==3.13\n' >> requirements.txt
 
 # Needed for docker CTFd to call OCD.py
 INSERTENTRY='# Create the database\necho "Creating database"\npython OCD.py || echo "Skipping database creation"\n\n# Start CTFd'
@@ -70,14 +70,14 @@ sed -i "s/^    image: mariadb:10.4$/$MARIA/" docker-compose.yml
 
 
 # Start
-echo "Starting CTFd"
+printf 'Starting CTF\n'
 docker-compose up -d > /dev/null
 
 # Wait for website to be running
-echo "Waiting for CTFd to be running"
+printf 'Waiting for CTFd to be running\n'
 while ! curl -sL localhost:8000 > /dev/null
 do
-    echo -n '.'
+    printf '.'
     sleep 1
 done
 
@@ -86,14 +86,14 @@ WSITE=$(curl -sL localhost:8000)
 
 case "$WSITE"
 in 
-    *id=\"setup-form\"*) echo '\nSkipping setup' ; 
+    *id=\"setup-form\"*) printf '\nSkipping setup' ; 
                          docker-compose rm -sf cache ; 
                          rm -rf .data/redis ;
                          docker-compose up -d cache > /dev/null ;;
-    *) echo '\nSetup already done' ;;
+    *) printf '\nSetup already done' ;;
 esac
 
-echo "CTFd setup done"
+printf 'CTFd setup done\n'
 }
 
 
@@ -102,18 +102,18 @@ cd ..
 
 # In CTFdeploy
 [ $CHALLENGE_COMPOSE -eq 0 ] && exit 0
-[ ! -f OCD/docker_challenges/docker-compose.yml ] || echo 'No docker-compose.yml found in OCD/docker_challenges. Exiting.' && exit 1
-cd OCD/docker_challenges
+[ ! -f OCD/docker_challenges/docker-compose.yml ] || printf 'No docker-compose.yml found in OCD/docker_challenges. Exiting.\n' && exit 1
+cd OCD/docker_challenges || printf 'OCD/docker_challenges is missing\n' && exit 1
 
-echo 'Starting challenge containers'
+printf 'Starting challenge containers\n'
 docker-compose up -d
 
-echo 'Docker challenge containers done'
+printf 'Docker challenge containers done\n'
 }
 
 
 # cd to start.sh location
-cd $(dirname $0)
+cd "$(dirname "$0")" || printf 'Something is wrong..\n' && exit 1
 
 # Case for intentions
 case $1 in
