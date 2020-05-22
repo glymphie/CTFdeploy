@@ -124,12 +124,13 @@ def config_setup(session,setupConfig):
 
     if 'style' in setupConfig:
         with open('OCD/config_files/' + setupConfig['style'],'r') as style:
-            styleHeader += ''.join(style.readlines())
+            styleHeader += style.read()
 
     if 'theme_header' in setupConfig:
         with open('OCD/config_files/' + setupConfig['theme_header'],'r') as header:
-            styleHeader += ''.join(header.readlines())
-        commit_to_list('theme_header',styleHeader)
+            styleHeader += header.read()
+
+    commit_to_list('theme_header',styleHeader)
 
     if 'theme_footer' in setupConfig:
         with open('OCD/config_files/' + setupConfig['theme_footer'],'r') as footer:
