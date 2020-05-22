@@ -48,15 +48,11 @@ Make sure `setup.yml` is configured to your liking. It is located in [OCD/setup.
     - sudo `./start -s`  
 
 ## Stop and cleaning up
-Stopping the containers is done normally via docker-compose while in the CTFd folder.
-
-`docker-compose down`
-
-Clean up CTFd if you changed your mind and want to start over. <b>Doesn't touch your config in CTFdeploy.</b>
+Clean up CTFd if you changed your mind and want to start over. <b>Doesn't touch your config in CTFdeploy.</b>  
 
 `sudo ./start -c`
 
-This resets altered files, removes CTFdeploy files, and clears the cache so CTFd can be started from fresh again.
+This stops CTFd, MariaDB, and redis docker containers, resets altered files, removes CTFdeploy files, and clears the cache so CTFd can be started from fresh again.
 
 # How does it work?
 
