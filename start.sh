@@ -35,9 +35,10 @@ exit 1
 clean(){
 cd CTFd || error 'You need CTFd to use this script'
 docker-compose down || error 'You need to pull the submodule down first'
-[ -d .data ] && printf 'Removing .data\n' && rm -rf .data 
-git clean -df
-git reset --hard
+printf 'Cleaning CTFd\n'
+[ -d .data ] && rm -rf .data 
+git clean -df > /dev/null
+git reset --hard > /dev/null
 }
 
 
