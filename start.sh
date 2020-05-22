@@ -53,6 +53,10 @@ start(){
 printf 'Checking setup.yml syntax\n'
 python3 OCD/CTFd_setup/check_yaml.py OCD/setup.yml || exit 1
 
+printf 'Making sure CTFd is stopped'
+cd CTFd && docker-compose down || error 'You need CTFd to use this script'
+cd .. || 'Something went wrong'
+
 printf 'Copying files into CTFd\n'
 cp -r OCD CTFd
 
