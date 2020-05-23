@@ -20,7 +20,7 @@ Remember to configure setup.yml.
 Set 'CHALLENGE_COMPOSE=1' if 'docker-compose up' for challenges is wanted.
 " 
 
-printf '%s\n' "$USAGE"
+printf '%s' "$USAGE"
 exit 0
 }
 
@@ -38,7 +38,7 @@ docker-compose down || error 'You need to pull the submodule down first'
 printf 'Cleaning CTFd\n'
 [ -d .data ] && rm -rf .data 
 git clean -df > /dev/null
-git reset --hard > /dev/null
+git checkout -- . > /dev/null
 }
 
 
@@ -54,7 +54,8 @@ printf 'Checking setup.yml syntax\n'
 python3 OCD/CTFd_setup/check_yaml.py OCD/setup.yml || exit 1
 
 printf 'Making sure CTFd is stopped'
-cd CTFd && docker-compose down || error 'You need CTFd to use this script'
+cd CTFd || error 'You need CTFd to use this script'
+docker-compose down || error 'You need CTFd to use this script'
 cd .. || error 'Something went wrong'
 
 printf 'Copying files into CTFd\n'

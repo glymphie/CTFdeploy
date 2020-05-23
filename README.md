@@ -18,7 +18,7 @@ it.
 ##### Local setup:
   1. Docker, [Install docker](https://docs.docker.com/get-docker/).
   2. Docker-compose, [Install docker-compose](https://docs.docker.com/compose/install/).
-  3. CTFd, pull CTFd in CTFdeploy as a submodule: `git submodule update --init --recursive`
+  3. CTFd, pull CTFd in CTFdeploy as a submodule: `git submodule update`
   4. Python3, PyYAML, pycountry  
     - `python3 -m pip install -r requirements.txt`   
         - `PyYAML`: Used to check for syntax errors in `setup.yml` before deployment.  
@@ -45,14 +45,15 @@ Make sure `setup.yml` is configured to your liking. It is located in [OCD/setup.
   4. <b>OPTIONAL</b>: Configure docker containers in [OCD/docker_challenges](OCD/docker_challenges) and make a `docker-compose.yml` file for these containers.   
     - Edit `DOCKER_COMPOSE` in `start.sh` if you want it to start your challenge containers for you via docker-compose. 
   5. Start the CTFd server  
-    - sudo `./start -s`  
+    - `# ./start -s`  
 
 ## Stop and cleaning up
 Clean up CTFd if you changed your mind and want to start over. <b>Doesn't touch your config in CTFdeploy.</b>  
 
-`sudo ./start -c`
+`# ./start -c`
 
-This stops CTFd, MariaDB, and redis docker containers, resets altered files, removes CTFdeploy files, and clears the cache so CTFd can be started from fresh again.
+This stops CTFd, MariaDB, and redis docker containers, resets altered files, removes CTFdeploy files, and clears the cache so CTFd can be started from fresh again.  
+<b>Remember to commit your changes in CTFd if you want to preserve them. ./start -c will get rid of uncommitted changes.</b>
 
 # How does it work?
 
