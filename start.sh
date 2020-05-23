@@ -38,7 +38,15 @@ docker-compose down || error 'You need to pull the submodule down first'
 printf 'Cleaning CTFd\n'
 [ -d .data ] && rm -rf .data 
 git clean -df > /dev/null
-git checkout -- . > /dev/null
+
+grep -q 'PyYAML==3.13' requirements.txt &&\
+    sed -i "/PyYAML==3.13/d" requirements.txt
+grep -q "# Create the database" docker-entrypoint.sh &&\
+    sed -i "/# Create the database/d" docker-entrypoint.sh &&\
+    sed -i '/echo "Creating database"/d' docker-entrypoint.sh &&\
+    sed -i '/python OCD.py || echo "Skipping database creation"/d' docker-entrypoint.sh
+grep -q "$MARIA" docker-compose.yml &&\
+    sed -i "s/$MARIA/    image: mariadb:10.4/" docker-compose.yml
 }
 
 
@@ -55,7 +63,7 @@ python3 OCD/CTFd_setup/check_yaml.py OCD/setup.yml || exit 1
 
 printf 'Making sure CTFd is stopped'
 cd CTFd || error 'You need CTFd to use this script'
-docker-compose down || error 'You need CTFd to use this script'
+docker-compose down || error 'You need to pull the submodule down first'
 cd .. || error 'Something went wrong'
 
 printf 'Copying files into CTFd\n'
@@ -70,15 +78,13 @@ mv OCD/CTFd_setup/OCD.py .
 mv OCD/CTFd_setup/db.py .
 
 # Needed for YAML in docker
-printf 'PyYAML==3.13\n' >> requirements.txt
+grep 'PyYAML==3.13' requirements.txt || printf 'PyYAML==3.13\n' >> requirements.txt
 
 # Needed for docker CTFd to call OCD.py
-INSERTENTRY='# Create the database\necho "Creating database"\npython OCD.py || echo "Skipping database creation"\n\n# Start CTFd'
-sed -i "s/^# Start CTFd$/$INSERTENTRY/" docker-entrypoint.sh
+grep "$INSERTENTRY" docker-entrypoint.sh || sed -i "s/^# Start CTFd$/$INSERTENTRY/" docker-entrypoint.sh
 
 # Needed for MariaDB versioning bug
-MARIA='    image: mariadb:10.4.12'
-sed -i "s/^    image: mariadb:10.4$/$MARIA/" docker-compose.yml
+grep "$MARIA" docker-compose.yml || sed -i "s/^    image: mariadb:10.4$/$MARIA/" docker-compose.yml
 
 
 # Start
@@ -126,6 +132,9 @@ printf 'Docker challenge containers done\n'
 
 # cd to start.sh location
 cd "$(dirname "$0")" || error 'Something is wrong..'
+
+INSERTENTRY='# Create the database\necho \"Creating database\"\npython OCD.py || echo \"Skipping database creation\"\n# Start CTFd'
+MARIA='    image: mariadb:10.4.12'
 
 # Case for intentions
 case $1 in
