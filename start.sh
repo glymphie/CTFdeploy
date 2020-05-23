@@ -58,7 +58,7 @@ cd CTFd && docker-compose down || error 'You need CTFd to use this script'
 cd .. || error 'Something went wrong'
 
 printf 'Copying files into CTFd\n'
-cp -r OCD CTFd
+cp -r --preserve OCD CTFd
 
 # In CTFd directory
 cd CTFd || error 'You need CTFd to use this script'
