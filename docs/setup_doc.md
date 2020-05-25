@@ -3,7 +3,7 @@ An overview of what is happening and why some decisions were made in the creatio
 
 ## start.sh
 The orchestration of the whole setup is controlled by this simple script. The first thing the script does is check what flag is set and execute accordingly.   
-<b>`start.sh` needs sudo/root to remove some root owned files, .data in CTFd. This is to speed up the deployment.</b>
+<b>`start.sh` needs sudo/root to remove some root owned files, .data/redis in CTFd. This is to speed up the deployment.</b>
 
 ### ./start.sh -s
 When the script starts with the -s flag:  

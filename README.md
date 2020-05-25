@@ -10,11 +10,10 @@ Make sure to read through the [CTFd](https://github.com/CTFd/CTFd) documentation
 and install their dependencies before using this script, as it is dependent on
 it.
 
-<b>Only tested on Linux.</b>
-
 # Guide
 
 ### Dependencies
+
 ##### Local setup:
   1. Docker, [Install docker](https://docs.docker.com/get-docker/).
   2. Docker-compose, [Install docker-compose](https://docs.docker.com/compose/install/).
@@ -60,7 +59,7 @@ This stops CTFd, MariaDB, and redis docker containers, resets altered files, rem
 ### [Documentation](docs/setup_doc.md).
 
 # Notice
-<b>CTFdeploy will alter the following files in CTFd: requirements.txt, docker-compose.yml, and docker-entrypoint.sh. This is to integrate CTFdeploy, read through the documentation and read the source code if you are in doubt about either integrity or safety.</b>
+<b>CTFdeploy will alter the following files in CTFd: requirements.txt and docker-entrypoint.sh. This is to integrate CTFdeploy, read through the documentation and read the source code if you are in doubt about either integrity or safety.</b>
 
 # References
 

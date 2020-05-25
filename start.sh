@@ -45,8 +45,6 @@ grep -q "# Create the database" docker-entrypoint.sh &&\
     sed -i "/# Create the database/d" docker-entrypoint.sh &&\
     sed -i '/echo "Creating database"/d' docker-entrypoint.sh &&\
     sed -i '/python OCD.py || echo "Skipping database creation"/d' docker-entrypoint.sh
-grep -q "$MARIA" docker-compose.yml &&\
-    sed -i "s/$MARIA/    image: mariadb:10.4/" docker-compose.yml
 }
 
 
@@ -82,9 +80,6 @@ grep 'PyYAML==3.13' requirements.txt || printf 'PyYAML==3.13\n' >> requirements.
 
 # Needed for docker CTFd to call OCD.py
 grep "$INSERTENTRY" docker-entrypoint.sh || sed -i "s/^# Start CTFd$/$INSERTENTRY/" docker-entrypoint.sh
-
-# Needed for MariaDB versioning bug
-grep "$MARIA" docker-compose.yml || sed -i "s/^    image: mariadb:10.4$/$MARIA/" docker-compose.yml
 
 
 # Start
@@ -134,7 +129,6 @@ printf 'Docker challenge containers done\n'
 cd "$(dirname "$0")" || error 'Something is wrong..'
 
 INSERTENTRY='# Create the database\necho \"Creating database\"\npython OCD.py || echo \"Skipping database creation\"\n# Start CTFd'
-MARIA='    image: mariadb:10.4.12'
 
 # Case for intentions
 case $1 in
