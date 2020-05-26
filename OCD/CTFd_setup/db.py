@@ -39,20 +39,20 @@ class Users(Base):
     __tablename__ = "users"
     id = Column('id', INTEGER(11), primary_key=True, nullable=False)
     oauth_id = Column('oauth_id', INTEGER(11), unique=True)
-    name = Column('name', VARCHAR(128))       
-    password = Column('password', VARCHAR(128))   
-    email = Column('email', VARCHAR(128), unique=True)      
-    type = Column('type', VARCHAR(80))       
-    secret = Column('secret', VARCHAR(128))     
-    website = Column('website', VARCHAR(128))    
+    name = Column('name', VARCHAR(128))
+    password = Column('password', VARCHAR(128))
+    email = Column('email', VARCHAR(128), unique=True)
+    type = Column('type', VARCHAR(80))
+    secret = Column('secret', VARCHAR(128))
+    website = Column('website', VARCHAR(128))
     affiliation = Column('affiliation', VARCHAR(128))
-    country = Column('country', VARCHAR(32))    
-    bracket = Column('bracket', VARCHAR(32))    
-    hidden = Column('hidden', TINYINT(1))     
-    banned = Column('banned', TINYINT(1))     
-    verified = Column('verified', TINYINT(1))   
-    team_id = Column('team_id', INTEGER(11))    
-    created = Column('created', DATETIME)    
+    country = Column('country', VARCHAR(32))
+    bracket = Column('bracket', VARCHAR(32))
+    hidden = Column('hidden', TINYINT(1))
+    banned = Column('banned', TINYINT(1))
+    verified = Column('verified', TINYINT(1))
+    team_id = Column('team_id', INTEGER(11))
+    created = Column('created', DATETIME)
 
 
 def create_user(name, **kwargs):
@@ -99,9 +99,9 @@ class Pages(Base):
     title = Column('title', VARCHAR(80))
     route = Column('route', VARCHAR(80))
     content = Column('content', TEXT)
-    draft = Column('draft', TINYINT(1)) 
-    hidden = Column('hidden', TINYINT(1)) 
-    auth_required = Column('auth_required', TINYINT(1)) 
+    draft = Column('draft', TINYINT(1))
+    hidden = Column('hidden', TINYINT(1))
+    auth_required = Column('auth_required', TINYINT(1))
 
 
 def create_page(route, content, **kwargs):
@@ -164,7 +164,7 @@ class Challenges(Base):
     value = Column('value', INTEGER(11))
     category = Column('category', VARCHAR(80))
     type = Column('type', VARCHAR(80))
-    state = Column('state', VARCHAR(80), nullable=False)      
+    state = Column('state', VARCHAR(80), nullable=False)
     requirements = Column('requirements', JSON)
 
 

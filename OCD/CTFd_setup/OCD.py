@@ -1,6 +1,6 @@
 """
-High level query creation script for MySQL database in CTFd. 
-Will be reading setup.yml 
+High level query creation script for MySQL database in CTFd.
+Will be reading setup.yml
 """
 # Create a directory and get a random string for hashing
 import os
@@ -11,14 +11,14 @@ import time
 import calendar
 # Copying files to other directory
 import shutil
-# Regex match for hints in setup.yml 
+# Regex match for hints in setup.yml
 import re
 
 
 # MySQL import to connect to a session, update an existing table and select from SQL tables
 from sqlalchemy import create_engine, update, select
 from sqlalchemy.orm import sessionmaker
-import pymysql 
+import pymysql
 # Import of setup.yml and parser
 import yaml
 # Makes sure files aren't maliciously named
@@ -74,7 +74,7 @@ def upload_file(commitList, type, filename, challenge_id=None):
 
 def config_setup(session, setupConfig):
     """
-    Go through config and commit 
+    Go through config and commit
     """
     commitList = []
 
@@ -229,7 +229,6 @@ def challenges_setup(session, setupChallenges):
             kwargs = dict()
 
             with open('OCD/challenge_files/' + setupChallenges[category][challenge]['description']) as desc:
-
                 description = desc.read()
 
             if 'max_attempts' in setupChallenges[category][challenge]:

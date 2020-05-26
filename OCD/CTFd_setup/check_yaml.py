@@ -63,7 +63,7 @@ def check_keys(YAMLfile):
                 quit(1)
         return error_quit
 
-    
+
     # Make sure yaml doesn't contain None values
     def check_yaml_none(*args, **kwargs):
         for key in kwargs:
@@ -96,18 +96,18 @@ def check_keys(YAMLfile):
             if int(value) < 0:
                 raise
         except:
-            print(error.print_section() + key + ', must be a positive number') 
+            print(error.print_section() + key + ', must be a positive number')
             error.error = 1
 
 
     # Check between keyvalue and two values and print error
     def check_if_vorv(key, keyvalue, value1, value2):
-        if keyvalue in (value1, value2): 
+        if keyvalue in (value1, value2):
             return
         print(error.print_section() + key + ', must be either ' + str(value1) + ' or ' + str(value2))
         error.error = 1
 
-    
+
     # Check if timeformat is correct
     def check_time(key, timevalue):
         try:
@@ -118,7 +118,7 @@ def check_keys(YAMLfile):
             print(error.print_section() + key + ', is formatted incorrectly')
             error.error = 1
 
-    
+
     # Check if email domains are formatted correctly
     def check_whitelist(key, domains):
         for domain in domains:
@@ -136,7 +136,7 @@ def check_keys(YAMLfile):
         if not re.match(re.compile(r"""(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"""), email):
             print(error.print_section() + key + ', is formatted incorrectly, ' + email)
             error.error = 1
-        
+
 
     # Check if file exists
     def check_file(key, folder, keyfile):
@@ -144,7 +144,7 @@ def check_keys(YAMLfile):
             print(error.print_section() + key + ', file does not exist, ' + keyfile)
             error.error = 1
 
-    
+
     # Check if website is valid format - stolen from https://www.regextester.com/93652
     def check_website(key, website):
         if not re.match(re.compile(r'^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$'), website):
@@ -197,7 +197,7 @@ def check_keys(YAMLfile):
 
             check_if_vorv('user_mode', configKeys['user_mode'], 'users', 'teams') 
 
-            
+
             if 'team_size' in configKeys:
                 check_if_int('team_size', configKeys['team_size'])
 
@@ -206,7 +206,7 @@ def check_keys(YAMLfile):
 
             if 'whitelist' in configKeys:
                 check_whitelist('whitelist', configKeys['whitelist'])
-            
+
             if 'logo' in configKeys:
                 check_file('logo', 'OCD/config_files/', configKeys['logo'])
 
@@ -234,7 +234,7 @@ def check_keys(YAMLfile):
             check_config_musts(usersKeys[user], 'email')
             check_config_musts(usersKeys[user], 'type')
 
-        
+
         # Check if syntax is correct
         @check_error
         def syntax_check(user):
@@ -246,7 +246,7 @@ def check_keys(YAMLfile):
 
             if 'website' in usersKeys[user]:
                 check_website('website', usersKeys[user]['website'])
-                 
+
             if 'country' in usersKeys[user]:
                 check_countrycode('country', usersKeys[user]['country'])
 
@@ -275,7 +275,7 @@ def check_keys(YAMLfile):
             if 'auth_required' in pagesKeys[page]:
                 check_if_vorv('auth_required', pagesKeys[page]['auth_required'], 1, 0)
 
-    
+
         # Loop through all pages
         pagesKeys = YAMLfile['CTFd']['pages']
         check_config_musts(pagesKeys, 'index')
@@ -300,7 +300,7 @@ def check_keys(YAMLfile):
             # Check if flag syntax is valid
             @check_error
             def flag_check(flag):
-                error.section = 'challenges, ' + category + ', ' + challenge + ', flag' 
+                error.section = 'challenges, ' + category + ', ' + challenge + ', flag'
                 check_config_musts(flag, 'flag')
 
                 if 'type' in flag:
@@ -331,7 +331,7 @@ def check_keys(YAMLfile):
                 for requirement in challengesKeys[category][challenge]['requirements']:
                     check_challenge('requirements', requirement, challengesList)
 
-            
+
             hintmatches = [hint for hint in challengesKeys[category][challenge] if re.match(re.compile('^hint*'), hint)]
             for hint in hintmatches:
                 hint_check(hint)
@@ -356,7 +356,7 @@ def check_keys(YAMLfile):
 
 
     # Fake Main
-    error = Error() 
+    error = Error()
 
     check_yaml_none(**YAMLfile)
 
