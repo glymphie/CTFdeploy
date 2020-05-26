@@ -26,8 +26,8 @@ Config is defined as a dictionary with the configuration as lists with list memb
 `name`: The name of the CTF.  
 `description`: Description of the CTF.  
 `user_mode`: Can be either `users` or `teams`.  
-`start`: Start time of the CTF. Format: `dd/mm/yyyy hh:mm`.  
-`end`: End time of the CTF. Format: `dd/mm/yyyy hh:mm`.  
+`start`: Start time of the CTF. Format: `dd/mm/yyyy hh:mm`. Will be using the timezone of the deploying machine.
+`end`: End time of the CTF. Format: `dd/mm/yyyy hh:mm`. Will be using the timezone of the deploying machine.
   
 ##### Optional
 `whitelist`: Can have multiple list members. Whitelist of email domains.    
