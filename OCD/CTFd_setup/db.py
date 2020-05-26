@@ -1,13 +1,18 @@
+"""
+Module for creating MySQL queries for CTFd
+"""
 from sqlalchemy import Column
-from sqlalchemy.dialects.mysql import VARCHAR, LONGTEXT, TEXT, INTEGER, TINYINT, DATETIME, JSON
+from sqlalchemy.dialects.mysql import VARCHAR, TEXT, INTEGER, TINYINT, DATETIME, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from CTFd.utils.crypto import hash_password
 
 
 Base = declarative_base()
 
-# Config
 class Config(Base):
+    """
+    Config
+    """
     __tablename__ = "config"
 
     id = Column('id', INTEGER(11), primary_key=True, nullable=False)
@@ -15,7 +20,10 @@ class Config(Base):
     value = Column('value', TEXT)
 
 
-def create_config(key,value):
+def create_config(key, value):
+    """
+    Create config query
+    """
     config = Config()
 
     config.key = key
@@ -24,28 +32,33 @@ def create_config(key,value):
     return config
 
 
-# Users
 class Users(Base):
+    """
+    Users
+    """
     __tablename__ = "users"
     id = Column('id', INTEGER(11), primary_key=True, nullable=False)
-    oauth_id = Column('oauth_id',INTEGER(11),unique=True)
-    name = Column('name',VARCHAR(128))       
-    password = Column('password',VARCHAR(128))   
-    email = Column('email',VARCHAR(128),unique=True)      
-    type = Column('type',VARCHAR(80))       
-    secret = Column('secret',VARCHAR(128))     
-    website = Column('website',VARCHAR(128))    
-    affiliation = Column('affiliation',VARCHAR(128))
-    country = Column('country',VARCHAR(32))    
-    bracket = Column('bracket',VARCHAR(32))    
-    hidden = Column('hidden',TINYINT(1))     
-    banned = Column('banned',TINYINT(1))     
-    verified = Column('verified',TINYINT(1))   
-    team_id = Column('team_id',INTEGER(11))    
-    created = Column('created',DATETIME)    
+    oauth_id = Column('oauth_id', INTEGER(11), unique=True)
+    name = Column('name', VARCHAR(128))       
+    password = Column('password', VARCHAR(128))   
+    email = Column('email', VARCHAR(128), unique=True)      
+    type = Column('type', VARCHAR(80))       
+    secret = Column('secret', VARCHAR(128))     
+    website = Column('website', VARCHAR(128))    
+    affiliation = Column('affiliation', VARCHAR(128))
+    country = Column('country', VARCHAR(32))    
+    bracket = Column('bracket', VARCHAR(32))    
+    hidden = Column('hidden', TINYINT(1))     
+    banned = Column('banned', TINYINT(1))     
+    verified = Column('verified', TINYINT(1))   
+    team_id = Column('team_id', INTEGER(11))    
+    created = Column('created', DATETIME)    
 
 
-def create_user(name,**kwargs):
+def create_user(name, **kwargs):
+    """
+    Create user query
+    """
     user = Users()
 
     user.name = name
@@ -76,20 +89,25 @@ def create_user(name,**kwargs):
     return user
 
 
-# Pages
 class Pages(Base):
+    """
+    Pages
+    """
     __tablename__ = "pages"
 
     id = Column('id', INTEGER(11), primary_key=True, nullable=False)
-    title = Column('title',VARCHAR(80))
-    route = Column('route',VARCHAR(80))
-    content = Column('content',TEXT)
-    draft = Column('draft',TINYINT(1)) 
-    hidden = Column('hidden',TINYINT(1)) 
-    auth_required = Column('auth_required',TINYINT(1)) 
+    title = Column('title', VARCHAR(80))
+    route = Column('route', VARCHAR(80))
+    content = Column('content', TEXT)
+    draft = Column('draft', TINYINT(1)) 
+    hidden = Column('hidden', TINYINT(1)) 
+    auth_required = Column('auth_required', TINYINT(1)) 
 
 
-def create_page(route,content,**kwargs):
+def create_page(route, content, **kwargs):
+    """
+    Create page query
+    """
     page = Pages()
 
     page.route = route
@@ -109,17 +127,22 @@ def create_page(route,content,**kwargs):
     return page
 
 
-# Files
 class Files(Base):
+    """
+    Files
+    """
     __tablename__ = "files"
 
     id = Column('id', INTEGER(11), primary_key=True, nullable=False)
-    type = Column('type',VARCHAR(80))
-    location = Column('location',TEXT)
-    challenge_id = Column('challenge_id',INTEGER(11))
-    page_id = Column('page_id',INTEGER(11))
+    type = Column('type', VARCHAR(80))
+    location = Column('location', TEXT)
+    challenge_id = Column('challenge_id', INTEGER(11))
+    page_id = Column('page_id', INTEGER(11))
 
-def create_file(type,location,challenge_id=None):
+def create_file(type, location, challenge_id=None):
+    """
+    Create file query
+    """
     file = Files()
 
     file.type = type
@@ -129,8 +152,10 @@ def create_file(type,location,challenge_id=None):
     return file
 
 
-# Challenges
 class Challenges(Base):
+    """
+    Challenges
+    """
     __tablename__ = "challenges"
     id = Column('id', INTEGER(11), primary_key=True, nullable=False)
     name = Column('name', VARCHAR(80))
@@ -143,7 +168,10 @@ class Challenges(Base):
     requirements = Column('requirements', JSON)
 
 
-def create_challenge(name,category,description,value,**kwargs):
+def create_challenge(name, category, description, value, **kwargs):
+    """
+    Create challenge query
+    """
     challenge = Challenges()
 
     challenge.name = name
@@ -165,17 +193,22 @@ def create_challenge(name,category,description,value,**kwargs):
     return challenge
 
 
-# Flags
 class Flags(Base):
+    """
+    Flags
+    """
     __tablename__ = "flags"
 
     id = Column('id', INTEGER(11), primary_key=True, nullable=False)
-    challenge_id = Column('challenge_id',INTEGER(11))
-    type = Column('type',VARCHAR(80))
-    content = Column('content',TEXT)
-    data = Column('data',TEXT)
+    challenge_id = Column('challenge_id', INTEGER(11))
+    type = Column('type', VARCHAR(80))
+    content = Column('content', TEXT)
+    data = Column('data', TEXT)
 
-def create_flag(challenge_id,content,**kwargs):
+def create_flag(challenge_id, content, **kwargs):
+    """
+    Create flag query
+    """
     flag = Flags()
 
     flag.challenge_id = challenge_id
@@ -192,18 +225,23 @@ def create_flag(challenge_id,content,**kwargs):
     return flag
 
 
-# Hints
 class Hints(Base):
+    """
+    Hints
+    """
     __tablename__ = "hints"
 
     id = Column('id', INTEGER(11), primary_key=True, nullable=False)
-    type = Column('type',VARCHAR(80))
-    challenge_id = Column('challenge_id',INTEGER(11))
-    content = Column('content',TEXT)
-    cost = Column('cost',INTEGER(11))
-    requirements = Column('requirements',JSON)
+    type = Column('type', VARCHAR(80))
+    challenge_id = Column('challenge_id', INTEGER(11))
+    content = Column('content', TEXT)
+    cost = Column('cost', INTEGER(11))
+    requirements = Column('requirements', JSON)
 
-def create_hint(challenge_id,content,**kwargs):
+def create_hint(challenge_id, content, **kwargs):
+    """
+    Create hint query
+    """
     hint = Hints()
 
     hint.challenge_id = challenge_id
@@ -219,15 +257,20 @@ def create_hint(challenge_id,content,**kwargs):
     return hint
 
 
-# Tags
 class Tags(Base):
+    """
+    Tags
+    """
     __tablename__ = "tags"
 
     id = Column('id', INTEGER(11), primary_key=True, nullable=False)
-    challenge_id = Column('challenge_id',INTEGER(11))
-    value = Column('value',VARCHAR(80))
+    challenge_id = Column('challenge_id', INTEGER(11))
+    value = Column('value', VARCHAR(80))
 
-def create_tag(challenge_id,value):
+def create_tag(challenge_id, value):
+    """
+    Create tag query
+    """
     tag = Tags()
 
     tag.challenge_id = challenge_id

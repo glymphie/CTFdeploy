@@ -1,4 +1,7 @@
-import time, datetime
+"""
+Calculates the local time difference and accounts for daylight saving
+"""
+import time
 
 t = list(time.strftime("%z"))
 
