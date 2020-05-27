@@ -15,7 +15,7 @@ class Config(Base):
     """
     __tablename__ = "config"
 
-    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
+    ID = Column('id', INTEGER(11), primary_key=True, nullable=False)
     key = Column('key', TEXT)
     value = Column('value', TEXT)
 
@@ -29,12 +29,12 @@ class Users(Base):
     Users
     """
     __tablename__ = "users"
-    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
+    ID = Column('id', INTEGER(11), primary_key=True, nullable=False)
     oauth_id = Column('oauth_id', INTEGER(11), unique=True)
     name = Column('name', VARCHAR(128))
     password = Column('password', VARCHAR(128))
     email = Column('email', VARCHAR(128), unique=True)
-    type = Column('type', VARCHAR(80))
+    TYPE = Column('type', VARCHAR(80))
     secret = Column('secret', VARCHAR(128))
     website = Column('website', VARCHAR(128))
     affiliation = Column('affiliation', VARCHAR(128))
@@ -50,7 +50,7 @@ class Users(Base):
         self.name = name
         self.password = hash_password(kwargs['password'])
         self.email = kwargs['email']
-        self.type = kwargs['type']
+        self.TYPE = kwargs['type']
 
         self.website = None
         self.affiliation = None
@@ -79,7 +79,7 @@ class Pages(Base):
     """
     __tablename__ = "pages"
 
-    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
+    ID = Column('id', INTEGER(11), primary_key=True, nullable=False)
     title = Column('title', VARCHAR(80))
     route = Column('route', VARCHAR(80))
     content = Column('content', TEXT)
@@ -109,14 +109,14 @@ class Files(Base):
     """
     __tablename__ = "files"
 
-    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
-    type = Column('type', VARCHAR(80))
+    ID = Column('id', INTEGER(11), primary_key=True, nullable=False)
+    TYPE = Column('type', VARCHAR(80))
     location = Column('location', TEXT)
     challenge_id = Column('challenge_id', INTEGER(11))
     page_id = Column('page_id', INTEGER(11))
 
-    def __init__(self, type, location, challenge_id=None):
-        self.type = type
+    def __init__(self, TYPE, location, challenge_id=None):
+        self.TYPE = TYPE
         self.location = location
         self.challenge_id = challenge_id
 
@@ -127,13 +127,13 @@ class Challenges(Base):
     Challenges
     """
     __tablename__ = "challenges"
-    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
+    ID = Column('id', INTEGER(11), primary_key=True, nullable=False)
     name = Column('name', VARCHAR(80))
     description = Column('description', TEXT)
     max_attempts = Column('max_attempts', INTEGER(11))
     value = Column('value', INTEGER(11))
     category = Column('category', VARCHAR(80))
-    type = Column('type', VARCHAR(80))
+    TYPE = Column('type', VARCHAR(80))
     state = Column('state', VARCHAR(80), nullable=False)
     requirements = Column('requirements', JSON)
 
@@ -152,7 +152,7 @@ class Challenges(Base):
             self.max_attempts = kwargs['max_attempts']
 
         self.state = 'visible'
-        self.type = 'standard'
+        self.TYPE = 'standard'
 
 
 class Flags(Base):
@@ -161,9 +161,9 @@ class Flags(Base):
     """
     __tablename__ = "flags"
 
-    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
+    ID = Column('id', INTEGER(11), primary_key=True, nullable=False)
     challenge_id = Column('challenge_id', INTEGER(11))
-    type = Column('type', VARCHAR(80))
+    TYPE = Column('type', VARCHAR(80))
     content = Column('content', TEXT)
     data = Column('data', TEXT)
 
@@ -171,11 +171,11 @@ class Flags(Base):
         self.challenge_id = challenge_id
         self.content = content
 
-        self.type = 'static'
+        self.TYPE = 'static'
         self.data = None
 
         if 'type' in kwargs:
-            self.type = kwargs['type']
+            self.TYPE = kwargs['type']
         if 'case' in kwargs:
             self.data = kwargs['case']
 
@@ -186,8 +186,8 @@ class Hints(Base):
     """
     __tablename__ = "hints"
 
-    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
-    type = Column('type', VARCHAR(80))
+    ID = Column('id', INTEGER(11), primary_key=True, nullable=False)
+    TYPE = Column('type', VARCHAR(80))
     challenge_id = Column('challenge_id', INTEGER(11))
     content = Column('content', TEXT)
     cost = Column('cost', INTEGER(11))
@@ -197,12 +197,12 @@ class Hints(Base):
         self.challenge_id = challenge_id
         self.content = content
         self.cost = 0
-        self.type = 'standard'
+        self.TYPE = 'standard'
 
         if 'cost' in kwargs:
             self.cost = kwargs['cost']
         if 'type' in kwargs:
-            self.type = kwargs['type']
+            self.TYPE = kwargs['type']
 
 
 class Tags(Base):
@@ -211,7 +211,7 @@ class Tags(Base):
     """
     __tablename__ = "tags"
 
-    id = Column('id', INTEGER(11), primary_key=True, nullable=False)
+    ID = Column('id', INTEGER(11), primary_key=True, nullable=False)
     challenge_id = Column('challenge_id', INTEGER(11))
     value = Column('value', VARCHAR(80))
 

@@ -50,7 +50,7 @@ def commit_changes(session, commitList):
     session.commit()
 
 
-def upload_file(commitList, type, filename, challenge_id=None):
+def upload_file(commitList, TYPE, filename, challenge_id=None):
     """
     Upload file to random hashstring folder
     """
@@ -66,7 +66,7 @@ def upload_file(commitList, type, filename, challenge_id=None):
     shutil.copyfile('OCD/' + filename, filePath)
 
     # Add file to queries
-    commitList.append(Files(type, fileLocation, challenge_id))
+    commitList.append(Files(TYPE, fileLocation, challenge_id))
 
     # Return path to file
     return fileLocation
