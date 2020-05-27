@@ -19,17 +19,9 @@ class Config(Base):
     key = Column('key', TEXT)
     value = Column('value', TEXT)
 
-
-def create_config(key, value):
-    """
-    Create config query
-    """
-    config = Config()
-
-    config.key = key
-    config.value = value
-
-    return config
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
 
 
 class Users(Base):
@@ -54,39 +46,31 @@ class Users(Base):
     team_id = Column('team_id', INTEGER(11))
     created = Column('created', DATETIME)
 
+    def __init__(self, name, **kwargs):
+        self.name = name
+        self.password = hash_password(kwargs['password'])
+        self.email = kwargs['email']
+        self.type = kwargs['type']
 
-def create_user(name, **kwargs):
-    """
-    Create user query
-    """
-    user = Users()
+        self.website = None
+        self.affiliation = None
+        self.country = None
+        self.hidden = 1
+        self.verified = 0
+        self.banned = 0
 
-    user.name = name
-    user.password = hash_password(kwargs['password'])
-    user.email = kwargs['email']
-    user.type = kwargs['type']
-
-    user.website = None
-    user.affiliation = None
-    user.country = None
-    user.hidden = 1
-    user.verified = 0
-    user.banned = 0
-
-    if 'website' in kwargs:
-        user.website = kwargs['website']
-    if 'affiliation' in kwargs:
-        user.affiliation = kwargs['affiliation']
-    if 'country' in kwargs:
-        user.country = kwargs['country']
-    if 'hidden' in kwargs:
-        user.hidden = kwargs['hidden']
-    if 'verified' in kwargs:
-        user.verified = kwargs['verified']
-    if 'banned' in kwargs:
-        user.banned = kwargs['banned']
-
-    return user
+        if 'website' in kwargs:
+            self.website = kwargs['website']
+        if 'affiliation' in kwargs:
+            self.affiliation = kwargs['affiliation']
+        if 'country' in kwargs:
+            self.country = kwargs['country']
+        if 'hidden' in kwargs:
+            self.hidden = kwargs['hidden']
+        if 'verified' in kwargs:
+            self.verified = kwargs['verified']
+        if 'banned' in kwargs:
+            self.banned = kwargs['banned']
 
 
 class Pages(Base):
@@ -103,28 +87,20 @@ class Pages(Base):
     hidden = Column('hidden', TINYINT(1))
     auth_required = Column('auth_required', TINYINT(1))
 
+    def __init__(self, route, content, **kwargs):
+        self.route = route
+        self.content = content
 
-def create_page(route, content, **kwargs):
-    """
-    Create page query
-    """
-    page = Pages()
+        self.title = None
+        self.auth_required = None
 
-    page.route = route
-    page.content = content
+        if 'title' in kwargs:
+            self.title = kwargs['title']
+        if 'auth_required' in kwargs:
+            self.auth_required = kwargs['auth_required']
 
-    page.title = None
-    page.auth_required = None
-
-    page.draft = 0
-    page.hidden = 0
-
-    if 'title' in kwargs:
-        page.title = kwargs['title']
-    if 'auth_required' in kwargs:
-        page.auth_required = kwargs['auth_required']
-
-    return page
+        self.draft = 0
+        self.hidden = 0
 
 
 class Files(Base):
@@ -139,17 +115,11 @@ class Files(Base):
     challenge_id = Column('challenge_id', INTEGER(11))
     page_id = Column('page_id', INTEGER(11))
 
-def create_file(type, location, challenge_id=None):
-    """
-    Create file query
-    """
-    file = Files()
+    def __init__(self, type, location, challenge_id=None):
+        self.type = type
+        self.location = location
+        self.challenge_id = challenge_id
 
-    file.type = type
-    file.location = location
-    file.challenge_id = challenge_id
-
-    return file
 
 
 class Challenges(Base):
@@ -167,30 +137,22 @@ class Challenges(Base):
     state = Column('state', VARCHAR(80), nullable=False)
     requirements = Column('requirements', JSON)
 
+    def __init__(self, name, category, description, value, **kwargs):
+        self.name = name
+        self.category = category
+        self.description = description
+        self.value = value
 
-def create_challenge(name, category, description, value, **kwargs):
-    """
-    Create challenge query
-    """
-    challenge = Challenges()
+        self.max_attempts = 0
+        self.requirements = None
 
-    challenge.name = name
-    challenge.category = category
-    challenge.description = description
-    challenge.value = value
+        if 'requirements' in kwargs:
+            self.requirements = kwargs['requirements']
+        if 'max_attempts' in kwargs:
+            self.max_attempts = kwargs['max_attempts']
 
-    challenge.max_attempts = 0
-    challenge.requirements = None
-
-    if 'requirements' in kwargs:
-        challenge.requirements = kwargs['requirements']
-    if 'max_attempts' in kwargs:
-        challenge.max_attempts = kwargs['max_attempts']
-
-    challenge.state = 'visible'
-    challenge.type = 'standard'
-
-    return challenge
+        self.state = 'visible'
+        self.type = 'standard'
 
 
 class Flags(Base):
@@ -205,24 +167,17 @@ class Flags(Base):
     content = Column('content', TEXT)
     data = Column('data', TEXT)
 
-def create_flag(challenge_id, content, **kwargs):
-    """
-    Create flag query
-    """
-    flag = Flags()
+    def __init__(self, challenge_id, content, **kwargs):
+        self.challenge_id = challenge_id
+        self.content = content
 
-    flag.challenge_id = challenge_id
-    flag.content = content
+        self.type = 'static'
+        self.data = None
 
-    flag.type = 'static'
-    flag.data = None
-
-    if 'type' in kwargs:
-        flag.type = kwargs['type']
-    if 'case' in kwargs:
-        flag.data = kwargs['case']
-
-    return flag
+        if 'type' in kwargs:
+            self.type = kwargs['type']
+        if 'case' in kwargs:
+            self.data = kwargs['case']
 
 
 class Hints(Base):
@@ -238,23 +193,16 @@ class Hints(Base):
     cost = Column('cost', INTEGER(11))
     requirements = Column('requirements', JSON)
 
-def create_hint(challenge_id, content, **kwargs):
-    """
-    Create hint query
-    """
-    hint = Hints()
+    def __init__(self, challenge_id, content, **kwargs):
+        self.challenge_id = challenge_id
+        self.content = content
+        self.cost = 0
+        self.type = 'standard'
 
-    hint.challenge_id = challenge_id
-    hint.content = content
-    hint.cost = 0
-    hint.type = 'standard'
-
-    if 'cost' in kwargs:
-        hint.cost = kwargs['cost']
-    if 'type' in kwargs:
-        hint.type = kwargs['type']
-
-    return hint
+        if 'cost' in kwargs:
+            self.cost = kwargs['cost']
+        if 'type' in kwargs:
+            self.type = kwargs['type']
 
 
 class Tags(Base):
@@ -267,13 +215,6 @@ class Tags(Base):
     challenge_id = Column('challenge_id', INTEGER(11))
     value = Column('value', VARCHAR(80))
 
-def create_tag(challenge_id, value):
-    """
-    Create tag query
-    """
-    tag = Tags()
-
-    tag.challenge_id = challenge_id
-    tag.value = value
-
-    return tag
+    def __init__(self, challenge_id, value):
+        self.challenge_id = challenge_id
+        self.value = value

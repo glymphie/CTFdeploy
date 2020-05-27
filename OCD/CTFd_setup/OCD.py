@@ -27,7 +27,7 @@ from werkzeug.utils import secure_filename
 from CTFd.utils.encoding import hexencode
 
 
-# Module containing SQL tables and query constructors
+# Module containing SQL tables
 from db import *
 
 
@@ -66,7 +66,7 @@ def upload_file(commitList, type, filename, challenge_id=None):
     shutil.copyfile('OCD/' + filename, filePath)
 
     # Add file to queries
-    commitList.append(create_file(type, fileLocation, challenge_id))
+    commitList.append(Files(type, fileLocation, challenge_id))
 
     # Return path to file
     return fileLocation
@@ -80,7 +80,7 @@ def config_setup(session, setupConfig):
 
     # Append to commit list
     def commit_to_list(key, value):
-        commitList.append(create_config(key, value))
+        commitList.append(Config(key, value))
 
 
     # Converts time to epoch
@@ -177,7 +177,7 @@ def users_setup(session, setupUsers):
     commitList = []
 
     for user in setupUsers:
-        commitList.append(create_user(user, **setupUsers[user]))
+        commitList.append(Users(user, **setupUsers[user]))
 
     commit_changes(session, commitList)
 
@@ -209,7 +209,7 @@ def pages_setup(session, setupPages):
         if 'auth_required' in setupPages[route]:
             kwargs['auth_required'] = setupPages[route]['auth_required']
 
-        commitList.append(create_page(route, page, **kwargs))
+        commitList.append(Pages(route, page, **kwargs))
 
     commit_changes(session, commitList)
 
@@ -231,7 +231,7 @@ def challenges_setup(session, setupChallenges):
             if 'max_attempts' in setupChallenges[category][challenge]:
                 kwargs['max_attempts'] = setupChallenges[category][challenge]['max_attempts']
 
-            commitList.append(create_challenge(challenge, category, description, setupChallenges[category][challenge]['value'], **kwargs))
+            commitList.append(Challenges(challenge, category, description, setupChallenges[category][challenge]['value'], **kwargs))
 
             commit_changes(session, commitList)
 
@@ -254,15 +254,14 @@ def extras_for_challenges(engine, session, setupChallenges):
     # Setup flags
     def flags_setup(category, challenge):
         kwargs = dict()
-        for config in setupChallenges[category][challenge]['flag']:
 
-            if 'type' in setupChallenges[category][challenge]['flag']:
-                kwargs['type'] = setupChallenges[category][challenge]['flag']['type']
-            if 'case' in setupChallenges[category][challenge]['flag']:
-                if setupChallenges[category][challenge]['flag']['case'] == 'insensitive':
-                    kwargs['case'] = 'case_insensitive'
+        if 'type' in setupChallenges[category][challenge]['flag']:
+            kwargs['type'] = setupChallenges[category][challenge]['flag']['type']
+        if 'case' in setupChallenges[category][challenge]['flag']:
+            if setupChallenges[category][challenge]['flag']['case'] == 'insensitive':
+                kwargs['case'] = 'case_insensitive'
 
-        commitList.append(create_flag(get_challenge_id(challenge), setupChallenges[category][challenge]['flag']['flag'], **kwargs))
+        commitList.append(Flags(get_challenge_id(challenge), setupChallenges[category][challenge]['flag']['flag'], **kwargs))
 
 
     # Setup tags
@@ -270,7 +269,7 @@ def extras_for_challenges(engine, session, setupChallenges):
         if 'tag' in setupChallenges[category][challenge]:
             chal_id = get_challenge_id(challenge)
             for tag in setupChallenges[category][challenge]['tag']:
-                commitList.append(create_tag(chal_id, tag))
+                commitList.append(Tags(chal_id, tag))
 
 
     # Setup challenge files
@@ -299,7 +298,7 @@ def extras_for_challenges(engine, session, setupChallenges):
                       setupChallenges[category][challenge][hint]['description'], 'r') as desc:
                 description = desc.read()
 
-            commitList.append(create_hint(chal_id, description, **kwargs))
+            commitList.append(Hints(chal_id, description, **kwargs))
 
 
     # Setup requirements
