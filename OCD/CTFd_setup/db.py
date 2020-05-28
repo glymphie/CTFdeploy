@@ -125,9 +125,9 @@ class Challenges(Base):
         self.description = description
         self.value = value
 
-        self.requirements = kwargs['requirements'] if 'requirements' in kwargs else None
         self.max_attempts = kwargs['max_attempts'] if 'max_attempts' in kwargs else 0
 
+        self.requirements = None
         self.state = 'visible'
         self.TYPE = 'standard'
 

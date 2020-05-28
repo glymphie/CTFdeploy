@@ -42,6 +42,14 @@ def check_setup(engine):
     conn.close()
 
 
+def read_setup_yaml(YAMLfile):
+    """
+    Read setup.yml file and return as dictionary
+    """
+    with open(YAMLfile, 'r') as setup:
+        return yaml.safe_load(setup)['CTFd']
+
+
 def commit_changes(session, commitList):
     """
     Commit changes of a list of changes
@@ -174,10 +182,7 @@ def users_setup(session, setupUsers):
     """
     Go through users and commit
     """
-    commitList = []
-
-    for user in setupUsers:
-        commitList.append(Users(user, **setupUsers[user]))
+    commitList = [Users(user, **setupUsers[user]) for user in setupUsers]
 
     commit_changes(session, commitList)
 
@@ -190,8 +195,6 @@ def pages_setup(session, setupPages):
 
     # Create all pages
     for route in setupPages:
-        kwargs = dict()
-
         with open('OCD/pages_files/' + setupPages[route]['page'], 'r') as pageFile:
             page = pageFile.read()
 
@@ -203,13 +206,7 @@ def pages_setup(session, setupPages):
                 page = page.replace('src="' + picture + '"', 'src="files/' + pictureLocaiton + '"')
                 page = page.replace("src='" + picture + "'", "src='files/" + pictureLocaiton + "'")
 
-        if 'title' in setupPages[route]:
-            kwargs['title'] = setupPages[route]['title']
-
-        if 'auth_required' in setupPages[route]:
-            kwargs['auth_required'] = setupPages[route]['auth_required']
-
-        commitList.append(Pages(route, page, **kwargs))
+        commitList.append(Pages(route, page, **setupPages[route]))
 
     commit_changes(session, commitList)
 
@@ -231,9 +228,13 @@ def challenges_setup(session, setupChallenges):
             if 'max_attempts' in setupChallenges[category][challenge]:
                 kwargs['max_attempts'] = setupChallenges[category][challenge]['max_attempts']
 
-            commitList.append(Challenges(challenge, category, description, setupChallenges[category][challenge]['value'], **kwargs))
+            commitList.append(Challenges(challenge, 
+                                         category, 
+                                         description, 
+                                         setupChallenges[category][challenge]['value'], 
+                                         **kwargs))
 
-            commit_changes(session, commitList)
+    commit_changes(session, commitList)
 
 
 def extras_for_challenges(engine, session, setupChallenges):
@@ -294,8 +295,7 @@ def extras_for_challenges(engine, session, setupChallenges):
             if 'cost' in setupChallenges[category][challenge][hint]:
                 kwargs['cost'] = setupChallenges[category][challenge][hint]['cost']
 
-            with open('OCD/challenge_files/' +
-                      setupChallenges[category][challenge][hint]['description'], 'r') as desc:
+            with open('OCD/challenge_files/' + setupChallenges[category][challenge][hint]['description'], 'r') as desc:
                 description = desc.read()
 
             commitList.append(Hints(chal_id, description, **kwargs))
@@ -337,14 +337,6 @@ def extras_for_challenges(engine, session, setupChallenges):
             requirements_setup(category, challenge)
 
     commit_changes(session, commitList)
-
-
-def read_setup_yaml(YAMLfile):
-    """
-    Read setup.yml file and return as dictionary
-    """
-    with open(YAMLfile, 'r') as setup:
-        return yaml.safe_load(setup)['CTFd']
 
 
 def main():
