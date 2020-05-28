@@ -103,7 +103,6 @@ class Files(Base):
         self.challenge_id = challenge_id
 
 
-
 class Challenges(Base):
     """
     Challenges
