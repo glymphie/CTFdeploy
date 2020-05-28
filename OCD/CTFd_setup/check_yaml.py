@@ -46,7 +46,11 @@ def read_setup_yaml(YAMLfile):
 
     with open(YAMLfile, 'r') as setup:
         try:
-            return yaml.safe_load(setup)
+            yamldict = yaml.safe_load(setup)
+            if isinstance(yamldict, dict):
+                return yamldict
+            else:
+                raise yaml.parser.ParserError
         except yaml.parser.ParserError:
             raise Exception('Please format setup.yml correctly')
 
@@ -185,6 +189,11 @@ def check_challenge(key, requirement, challengesList):
     if requirement not in challengesList:
         print(error.print_section() + key + ', this challenge is not defined in the setup, ' + requirement)
         error.error = 1
+
+
+@check_error
+def CTFd_config_check(YAMLfile):
+    check_config_musts(YAMLfile, 'CTFd')
 
 
 @check_error
@@ -393,8 +402,10 @@ def main():
     print(Colors().FAIL, end='')
     YAMLfile = read_setup_yaml(sys.argv[1])
 
-
     check_yaml_none(**YAMLfile)
+
+    error.section = 'Base'
+    CTFd_config_check(YAMLfile)
 
     error.section = 'CTFd'
     root_config_check(YAMLfile)
