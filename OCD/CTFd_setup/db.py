@@ -52,25 +52,12 @@ class Users(Base):
         self.email = kwargs['email']
         self.TYPE = kwargs['type']
 
-        self.website = None
-        self.affiliation = None
-        self.country = None
-        self.hidden = 1
-        self.verified = 0
-        self.banned = 0
-
-        if 'website' in kwargs:
-            self.website = kwargs['website']
-        if 'affiliation' in kwargs:
-            self.affiliation = kwargs['affiliation']
-        if 'country' in kwargs:
-            self.country = kwargs['country']
-        if 'hidden' in kwargs:
-            self.hidden = kwargs['hidden']
-        if 'verified' in kwargs:
-            self.verified = kwargs['verified']
-        if 'banned' in kwargs:
-            self.banned = kwargs['banned']
+        self.website = kwargs['website'] if 'website' in kwargs else None
+        self.affiliation = kwargs['affiliation'] if 'affiliation' in kwargs else None
+        self.country = kwargs['country'] if 'country' in kwargs else None
+        self.hidden = kwargs['hidden'] if 'hidden' in kwargs else 1
+        self.verified = kwargs['verified'] if 'verified' in kwargs else 0
+        self.banned = kwargs['banned'] if 'banned' in kwargs else 0
 
 
 class Pages(Base):
@@ -91,16 +78,11 @@ class Pages(Base):
         self.route = route
         self.content = content
 
-        self.title = None
-        self.auth_required = None
-
-        if 'title' in kwargs:
-            self.title = kwargs['title']
-        if 'auth_required' in kwargs:
-            self.auth_required = kwargs['auth_required']
-
         self.draft = 0
         self.hidden = 0
+
+        self.title = kwargs['title'] if 'title' in kwargs else None
+        self.auth_required = kwargs['auth_required'] if 'auth_required' in kwargs else None
 
 
 class Files(Base):
@@ -143,13 +125,8 @@ class Challenges(Base):
         self.description = description
         self.value = value
 
-        self.max_attempts = 0
-        self.requirements = None
-
-        if 'requirements' in kwargs:
-            self.requirements = kwargs['requirements']
-        if 'max_attempts' in kwargs:
-            self.max_attempts = kwargs['max_attempts']
+        self.requirements = kwargs['requirements'] if 'requirements' in kwargs else None
+        self.max_attempts = kwargs['max_attempts'] if 'max_attempts' in kwargs else 0
 
         self.state = 'visible'
         self.TYPE = 'standard'
@@ -168,16 +145,13 @@ class Flags(Base):
     data = Column('data', TEXT)
 
     def __init__(self, challenge_id, content, **kwargs):
+        self.cost = 0
+        self.TYPE = 'standard'
         self.challenge_id = challenge_id
         self.content = content
 
-        self.TYPE = 'static'
-        self.data = None
-
-        if 'type' in kwargs:
-            self.TYPE = kwargs['type']
-        if 'case' in kwargs:
-            self.data = kwargs['case']
+        self.TYPE = kwargs['type'] if 'type' in kwargs else 'static'
+        self.data = kwargs['case'] if 'case' in kwargs else None
 
 
 class Hints(Base):
@@ -196,13 +170,9 @@ class Hints(Base):
     def __init__(self, challenge_id, content, **kwargs):
         self.challenge_id = challenge_id
         self.content = content
-        self.cost = 0
-        self.TYPE = 'standard'
 
-        if 'cost' in kwargs:
-            self.cost = kwargs['cost']
-        if 'type' in kwargs:
-            self.TYPE = kwargs['type']
+        self.cost = kwargs['cost'] if 'cost' in kwargs else 0
+        self.TYPE = kwargs['type'] if 'type' in kwargs else 'standard'
 
 
 class Tags(Base):
