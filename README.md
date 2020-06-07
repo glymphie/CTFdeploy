@@ -43,10 +43,10 @@ Make sure `setup.yml` is configured to your liking. It is located in [OCD/setup.
     - For pages - [OCD/pages_files](OCD/pages_files).  
     - For challenges - [OCD/challenge_files](OCD/challenge_files).  
   4. <b>OPTIONAL</b>: Configure docker containers in [OCD/docker_challenges](OCD/docker_challenges) and make a `docker-compose.yml` file for these containers.   
-    - Edit `DOCKER_COMPOSE` in `start.sh` if you want it to start your challenge containers for you via docker-compose. 
-  5. <b>OPTIONAL</b>: Configure SSL Certificate setup. 
-    - Copy your private key and certificate into [OCD/ssl_cert](OCD/ssl_cert).
-    - Edit `start.sh` and define you `hostname URL`, `certificate filename`, and `private key filename`. Also set `NGINX_SSL` to 1 to enable SSL.
+    - Edit `DOCKER_COMPOSE` in `start.sh` if you want it to start your challenge containers for you via docker-compose.  
+  5. <b>OPTIONAL</b>: Configure SSL Certificate setup.   
+    - Copy your private key and certificate into [OCD/ssl_cert](OCD/ssl_cert).  
+    - Edit `start.sh` and define you `hostname URL`, `certificate filename`, and `private key filename`. Also set `NGINX_SSL` to 1 to enable SSL.  
   6. Start the CTFd server  
     - `# ./start -s`  
 
