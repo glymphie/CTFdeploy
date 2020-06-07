@@ -16,7 +16,11 @@ When the script starts with the -s flag:
   4. Docker-compose starts the `CTFd` server.
   5. It waits for the `CTFd` website to be reachable, and checks if `setup-form` is present, which means it's trying to do a new `CTFd` setup instance. This can be skipped so if it's present the `redis` cache server is cleared and restarted so the preconfigured setup can be used almost instantly. Alternatively, the `redis` server needs 5 minutes to clear its cache, however, restarting is faster.
   6. CTFd is up and running.
-  7. If `CHALLENGE_COMPOSE` is set to `1`, it will try to start up the containers stored in `OCD/docker_challenges`. This is just for convenience and can be skipped if you prefer to start the containers separately.
+ 
+#### Extra
+If `CHALLENGE_COMPOSE` is set to `1`, it will try to start up the containers stored in `OCD/docker_challenges`. This is just for convenience and can be skipped if you prefer to start the containers separately.
+
+If `NGINX_SSL` is set to `1`, and the filenames for the certificate and private key are valid, these will be used to configure the setup to use SSL, ergo HTTPS.
 
 ### ./start.sh -c
 <b>Make sure to stop CTFd, MariaDB, and redis container before cleaning.</b>

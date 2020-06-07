@@ -1,7 +1,20 @@
 #!/usr/bin/env sh
 
+
 # Are you using docker-compose challenge containers? Set to 1.
 CHALLENGE_COMPOSE=0
+
+
+# Are you using an SSL Certificate? Set to 1.
+NGINX_SSL=0
+# Set hostname to your URL.
+hostname='host'
+# Set cert to your certificate filename.
+cert='cert'
+# Set key to your private key filename.
+key='key'
+
+
 
 # Help
 help(){
@@ -26,7 +39,7 @@ exit 0
 
 
 error(){
-printf '%s\n' "$1"
+printf '%s\nExiting.\n' "$1"
 exit 1
 }
 
@@ -37,14 +50,8 @@ cd CTFd || error 'You need CTFd to use this script'
 docker-compose down || error 'You need to pull the submodule down first'
 printf 'Cleaning CTFd\n'
 [ -d .data ] && rm -rf .data 
-git clean -df > /dev/null
-
-grep -q 'PyYAML==3.13' requirements.txt &&\
-    sed -i "/PyYAML==3.13/d" requirements.txt
-grep -q "# Create the database" docker-entrypoint.sh &&\
-    sed -i "/# Create the database/d" docker-entrypoint.sh &&\
-    sed -i '/echo "Creating database"/d' docker-entrypoint.sh &&\
-    sed -i '/python OCD.py || echo "Skipping database creation"/d' docker-entrypoint.sh
+git checkout -- . > /dev/null
+git clean -df . > /dev/null
 }
 
 
@@ -54,18 +61,47 @@ python3 OCD/CTFd_setup/timezone.py > OCD/config_files/tz
 }
 
 
+# Setup for nginx HTTPS
+nginxssl(){
+if [ -f OCD/ssl_cert/"$cert" ]; then
+    grep -q 'CERTIFICATE' OCD/ssl_cert/"$cert" || error 'Missing Certificate.' 
+    cp OCD/ssl_cert/"$cert" CTFd/conf/nginx/. 
+else
+    error 'Missing Certificate.'
+fi
+
+if [ -f OCD/ssl_cert/"$key" ]; then
+    grep -q 'PRIVATE KEY' OCD/ssl_cert/"$key" || error 'Missing Private Key.' 
+    cp OCD/ssl_cert/"$key" CTFd/conf/nginx/. 
+else
+    error 'Missing Private Key.' 
+fi
+
+printf 'Setting up SSL\n'
+
+sed -i 's/^      - \.\/conf\/nginx\/http\.conf:\/etc\/nginx\/nginx\.conf$/      - \.\/conf\/nginx:\/etc\/nginx/' CTFd/docker-compose.yml
+sed -i 's/^      - 80:80$/      - 80:80\n      - 443:443/' CTFd/docker-compose.yml
+
+rm CTFd/conf/nginx/http.conf 2> /dev/null
+python3 OCD/CTFd_setup/setup_nginx.py "$hostname" "$cert" "$key"
+}
+
+
 # Start
 start(){
 printf 'Checking setup.yml syntax\n'
 python3 OCD/CTFd_setup/check_yaml.py OCD/setup.yml || exit 1
 
-printf 'Making sure CTFd is stopped'
+printf 'Making sure CTFd is stopped\n'
 cd CTFd || error 'You need CTFd to use this script'
 docker-compose down || error 'You need to pull the submodule down first'
 cd .. || error 'Something went wrong'
 
 printf 'Copying files into CTFd\n'
 cp -r --preserve OCD CTFd
+
+# Check for SSL setup
+[ $NGINX_SSL -eq 1 ] && nginxssl
 
 # In CTFd directory
 cd CTFd || error 'You need CTFd to use this script'
@@ -76,11 +112,10 @@ mv OCD/CTFd_setup/OCD.py .
 mv OCD/CTFd_setup/db.py .
 
 # Needed for YAML in docker
-grep 'PyYAML==3.13' requirements.txt || printf 'PyYAML==3.13\n' >> requirements.txt
+grep -q 'PyYAML==3.13' requirements.txt || printf 'PyYAML==3.13\n' >> requirements.txt
 
 # Needed for docker CTFd to call OCD.py
-grep "$INSERTENTRY" docker-entrypoint.sh || sed -i "s/^# Start CTFd$/$INSERTENTRY/" docker-entrypoint.sh
-
+grep -q "# Create the database" docker-entrypoint.sh || sed -i "s/^# Start CTFd$/$INSERTENTRY/" docker-entrypoint.sh
 
 # Start
 printf 'Starting CTF\n'
@@ -107,6 +142,8 @@ in
 esac
 
 printf 'CTFd setup done\n'
+
+[ $CHALLENGE_COMPOSE -eq 1 ] && dockerchallenges
 }
 
 
@@ -114,8 +151,7 @@ dockerchallenges(){
 cd ..
 
 # In CTFdeploy
-[ $CHALLENGE_COMPOSE -eq 0 ] && exit 0
-[ -f OCD/docker_challenges/docker-compose.yml ] || error 'No docker-compose.yml found in OCD/docker_challenges. Exiting.'
+[ -f OCD/docker_challenges/docker-compose.yml ] || error 'No docker-compose.yml found in OCD/docker_challenges.'
 cd OCD/docker_challenges || error 'OCD/docker_challenges is missing' 
 
 printf 'Starting challenge containers\n'
@@ -132,7 +168,7 @@ INSERTENTRY='# Create the database\necho \"Creating database\"\npython OCD.py ||
 
 # Case for intentions
 case $1 in
-    -s|--start) start; dockerchallenges;;
+    -s|--start) start ;;
     -c|--clean) clean ;;
     -h|--help|*) help ;;
 esac
