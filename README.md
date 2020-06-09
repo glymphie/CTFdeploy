@@ -1,5 +1,5 @@
 # CTFdeployment
-This deployment script is used for <b>FRESH</b> deployments of CTFd in docker. 
+This deployment script is used for <b>FRESH</b> deployments of CTFd in Docker. 
 Used to cut the time of deployment on new instances of CTFd. Can be customized 
 for specific config, admins, challenges, and pages, as to skip the setup step 
 for a premade CTF. Also includes automatic setup of HTTPS with SSL Certificate.
@@ -42,20 +42,22 @@ Make sure `setup.yml` is configured to your liking. It is located in [OCD/setup.
     - For config - [OCD/config_files](OCD/config_files).  
     - For pages - [OCD/pages_files](OCD/pages_files).  
     - For challenges - [OCD/challenge_files](OCD/challenge_files).  
-  4. <b>OPTIONAL</b>: Configure docker containers in [OCD/docker_challenges](OCD/docker_challenges) and make a `docker-compose.yml` file for these containers.   
-    - Edit `DOCKER_COMPOSE` in `start.sh` if you want it to start your challenge containers for you via docker-compose.  
+  4. <b>OPTIONAL</b>: Configure Docker challenge containers.  
+    - Copy your `docker-compose.yml` into [OCD/docker_challenges](OCD/docker_challenges) along with their Docker builds.
+    - Set `DOCKER_COMPOSE` to 1 in `start.sh` and they will be started after CTFd setup.  
   5. <b>OPTIONAL</b>: Configure SSL Certificate setup.   
     - Copy your private key and certificate into [OCD/ssl_cert](OCD/ssl_cert).  
     - Edit `start.sh` and define you `hostname URL`, `certificate filename`, and `private key filename`. Also set `NGINX_SSL` to 1 to enable SSL.  
   6. Start the CTFd server  
     - `# ./start -s`  
 
-## Stop and cleaning up
+## Cleaning up
 Clean up CTFd if you changed your mind and want to start over. <b>Doesn't touch your config in CTFdeploy.</b>  
 
 `# ./start -c`
 
-This stops CTFd, MariaDB, and redis docker containers, resets altered files, removes CTFdeploy files, and clears the cache so CTFd can be started from fresh again.  
+This stops CTFd, Nginx, MariaDB, and redis Docker containers, resets altered files, removes CTFdeploy files, and clears the cache so CTFd can be started from fresh again.  
+
 <b>Remember to commit your changes in CTFd if you want to preserve them. ./start -c will get rid of uncommitted changes.</b>
 
 # How does it work?
