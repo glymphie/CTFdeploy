@@ -50,8 +50,9 @@ cd CTFd || error 'You need CTFd to use this script'
 docker-compose down || error 'You need to pull the submodule down first'
 printf 'Cleaning CTFd\n'
 [ -d .data ] && rm -rf .data 
-git checkout -- . > /dev/null
+[ -d OCD ] && rm -rf OCD
 git clean -df . > /dev/null
+git checkout -- .
 }
 
 
