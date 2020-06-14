@@ -18,6 +18,9 @@ All the pages and files which are needed for the CTF such as: A custom index pag
 ## challenge_files
 All the files which are used in the challenges such as: A description, static files, etc.
 
+## ssl_cert
+Add your privatekey and certificate here. Edit nginx.conf if necessary.
+
 ## CTFd_setup
 <b>No need to modify anything in this one.</b>
 
