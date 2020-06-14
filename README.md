@@ -18,7 +18,7 @@ it.
 ##### Local setup:
   1. Docker, [Install docker](https://docs.docker.com/get-docker/).
   2. Docker-compose, [Install docker-compose](https://docs.docker.com/compose/install/).
-  3. CTFd, pull CTFd in CTFdeploy as a submodule: `git submodule update`
+  3. CTFd, pull CTFd in CTFdeploy as a submodule: `git submodule update --init`
   4. Python3, PyYAML, pycountry  
     - `python3 -m pip install -r requirements.txt`   
         - `PyYAML`: Used to check for syntax errors in `setup.yml` before deployment.  
