@@ -33,7 +33,7 @@ Testing script setup for 'completed' project.
 
 #### Extra goals
 Default is HTTP, HTTPS would be nice.
-- [ ] HTTPS nginx frontend.
+- [x] HTTPS nginx frontend.
 
 Error handler for docker containers, notification, log, and restart container.
 - [ ] Docker container monitoring.
