@@ -1,2 +1,2 @@
-PyYAML==3.13
+PyYAML==5.1
 pycountry==19.8.18
