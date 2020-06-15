@@ -11,7 +11,7 @@ NGINX_SSL=0
 hostname='host'
 # Set cert to your certificate filename.
 cert='cert'
-# Set key to your private key filename.
+# /Set key to your private key filename.
 key='key'
 
 
@@ -113,7 +113,7 @@ mv OCD/CTFd_setup/OCD.py .
 mv OCD/CTFd_setup/db.py .
 
 # Needed for YAML in docker
-grep -q 'PyYAML==3.13' requirements.txt || printf 'PyYAML==3.13\n' >> requirements.txt
+grep -q 'PyYAML>=4.2b1' requirements.txt || printf 'PyYAML>=4.2b1\n' >> requirements.txt
 
 # Needed for docker CTFd to call OCD.py
 grep -q "# Create the database" docker-entrypoint.sh || sed -i "s/^# Start CTFd$/$INSERTENTRY/" docker-entrypoint.sh
