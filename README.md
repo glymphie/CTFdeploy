@@ -1,5 +1,5 @@
 # CTFdeployment
-This deployment script is used for <b>FRESH</b> deployments of CTFd in Docker. 
+This deployment script is used for <b>FRESH</b> deployments of CTFd using Docker. 
 Used to cut the time of deployment on new instances of CTFd. Can be customized 
 for specific config, admins, challenges, and pages, as to skip the setup step 
 for a premade CTF. Also includes automatic setup of HTTPS with SSL Certificate.
