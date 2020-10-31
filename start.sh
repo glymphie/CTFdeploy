@@ -80,8 +80,8 @@ fi
 
 printf 'Setting up SSL\n'
 
-sed -i 's/^      - \.\/conf\/nginx\/http\.conf:\/etc\/nginx\/nginx\.conf$/      - \.\/conf\/nginx:\/etc\/nginx/' CTFd/docker-compose.yml
-sed -i 's/^      - 80:80$/      - 80:80\n      - 443:443/' CTFd/docker-compose.yml
+sed -ir 's/^(\s*)- \.\/conf\/nginx\/http\.conf:\/etc\/nginx\/nginx\.conf$/\1- \.\/conf\/nginx:\/etc\/nginx/' CTFd/docker-compose.yml
+grep -E '\s*- 443:443' || sed -i 's/^      - 80:80(\n      - 443:443)*/      - 80:80\n      - 443:443/' CTFd/docker-compose.yml
 
 rm CTFd/conf/nginx/http.conf 2> /dev/null
 python3 OCD/CTFd_setup/setup_nginx.py "$hostname" "$cert" "$key"
