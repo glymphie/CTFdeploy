@@ -30,7 +30,6 @@ from CTFd.utils.encoding import hexencode
 # Module containing SQL tables
 from db import *
 
-
 def check_setup(engine):
     """
     Check if setup already is done - close if it is
